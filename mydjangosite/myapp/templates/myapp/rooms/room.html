@@ -1,0 +1,88 @@
+<title>Quản lý phòng</title>
+<div class="midde_cont">
+    <div style="padding: 0px 15px;">
+        <div class="row">
+            <div class="col-5">
+                <h2 style="color: black; padding: 20px 30px;">QUẢN LÝ PHÒNG</h2>
+            </div>
+            <div class="col-7">
+                <form style="padding: 20px 34px; text-align: right;" action="listroom" method="GET">
+                    <label for="maPhong">Tìm kiếm phòng:</label>
+                    <input type="text" placeholder="Nhập số phòng..." id="maPhong" name="maPhong">
+                    <input type="submit" value="Search">
+                </form>
+            </div>
+        </div>
+        <div class="text">
+            <div class="room-container">
+                {% for room in rooms %}
+                <div id="table-{{ forloop.counter0 }}" class="room-box {% if room.tinhTrangPhong == 'có khách' %}cokhach
+                {% elif room.tinhTrangPhong == 'còn trống' %}controng
+                {% elif room.tinhTrangPhong == 'đang sửa chữa' %}dangsua
+                {% elif room.tinhTrangPhong == 'đã đặt' %}dadat
+                {% elif room.tinhTrangPhong == 'chưa dọn' %}chuadon
+                {% else %}other{% endif %}">
+                    <p>Số phòng: {{ room.maPhong }}</p>
+                    <p>Loại phòng: {{ room.loaiPhong }}</p>
+                    <p>Giá: {{ room.giaTien }}</p>
+                    {% if room.tinhTrangPhong == 'có khách' %}
+                    <i class="fas fa-bed" style="color: white;"></i>
+                    {% elif room.tinhTrangPhong == 'còn trống' %}
+                    <i class="fas fa-door-open" style="color: white;"></i>
+                    {% elif room.tinhTrangPhong == 'đã đặt' %}
+                    <i class="fas fa-calendar-check" style="color: white;"></i>
+                    {% elif room.tinhTrangPhong == 'đang sửa chữa' %}
+                    <i class="fas fa-wrench" style="color: white;"></i>
+                    {% elif room.tinhTrangPhong == 'chưa dọn' %}
+                    <i class="fas fa-exclamation-circle" style="color: white;"></i>
+                    {% else %}
+                    <i class="fas fa-question-circle"></i>
+                    {% endif %}
+                    <div class="context-menu">
+                        {% if room.tinhTrangPhong == 'có khách' %}
+                        <a href="{% url 'view_thue_phong' room.maPhong %}">
+                            <i class="fas fa-info-circle" style="color: red; font-size: 20px; margin-right: 5px;"></i>
+                            Thông tin thuê phòng
+                        </a>
+                        {% elif room.tinhTrangPhong == 'còn trống' %}
+                        <a href="{% url 'add_thuephong' room.maPhong  %}">
+                            <i style="font-size: 20px; margin-right: 10px" class="fas fa-bed"></i>
+                            Thuê phòng
+                        </a>
+                        <a href="">
+                            <i style="font-size: 20px; margin-right: 14px" class="fas fa-wrench"></i>
+                            Sửa phòng
+                        </a>
+                        {% elif room.tinhTrangPhong == 'đã đặt' %}
+                        <a href="">
+                            <i style="font-size: 20px; margin-right: 14px" class="fas fa-check-circle"></i>
+                            Check nhận phòng
+                        </a>
+                        {% elif room.tinhTrangPhong == 'đang sửa chữa' %}
+                        <a href="">
+                            <i style="font-size: 20px; margin-right: 2px; color: blue;" class="fas fa-check"></i>
+                            Hoàn tất sửa chữa
+                        </a>
+                        {% elif room.tinhTrangPhong == 'chưa dọn' %}
+                        <a href="">
+                            <i style="font-size: 20px; margin-right: 10px; color: blue;" class="fas fa-check"></i>
+                            Đơn xong
+                        </a>
+                        <a href="">
+                            <i style="font-size: 20px; margin-right: 10px" class="fas fa-wrench"></i>
+                            Sửa phòng
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Add a div to display student information -->
+                <div class="student-info" id="student-info-{{ room.maPhong }}"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- profile.html -->
+<h2>User Profile</h2>
+<p>Welcome, {{ fullName }}</p>
+<p>Your username is: {{ loggedInUser }}</p>

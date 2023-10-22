@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    {% include 'myapp/file/css.html' %}
+</head>
+<body class="dashboard dashboard_1">
+<div class="full_container">
+    <div class="inner_container">
+        {% include 'myapp/layout/header.html' %}
+        <div id="content">
+            {% include 'myapp/layout/navbar.html' %}
+            <br>
+            {% include 'myapp/rooms/room.html' %}
+        </div>
+    </div>
+</div>
+</body>
+{% include 'myapp/file/js.html' %}
+</html>

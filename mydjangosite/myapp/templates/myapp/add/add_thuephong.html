@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    {% include 'myapp/file/css.html' %}
+</head>
+<body class="dashboard dashboard_1">
+<div class="full_container">
+    <div class="inner_container">
+        {% include 'myapp/layout/header.html' %}
+        <div id="content">
+            {% include 'myapp/layout/navbar.html' %}
+            <br>
+            <div class="container w-50">
+                <h1 class="mt-5 mb-4 text-center">Thuê Phòng</h1>
+                <form method="post" action="{% url 'savethuephong' maPhong=maPhong %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <input type="hidden" name="maPhong" value="{{ maPhong }}" class="form-control"
+                               required="required"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="hoVaTenDem" class="form-label">Tên khách hàng</label>
+                        <input type="text" name="hoVaTenDem" id="hoVaTenDem" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="soDienThoai" class="form-label">Số điện thoại:</label>
+                        <input type="text" name="soDienThoai" id="soDienThoai"
+                               class="form-control"/>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="diaChi" class="form-label">Địa chỉ:</label>
+                        <input type="text" name="diaChi" id="diaChi" class="form-control"/>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" name="email" id="email" class="form-control"/>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="cccd" class="form-label">CCCD:</label>
+                        <input type="text" name="cccd" id="cccd" class="form-control"/>
+
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" name="maNhanVien" value="{{fullName}}" id="maNhanVien"
+                               class="form-control" required="required"/>
+                    </div>
+                    <input type="submit" value="Thuê phòng" class="btn btn-primary"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+{% include 'myapp/file/js.html' %}
+</html>

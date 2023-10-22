@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết thuê phòng</title>
+    {% include 'myapp/file/css.html' %}
+</head>
+<body class="dashboard dashboard_1">
+<div class="full_container">
+    <div class="inner_container">
+        {% include 'myapp/layout/header.html' %}
+        <div id="content">
+            {% include 'myapp/layout/navbar.html' %}
+            <br>
+            <div class="row">
+                <!-- Thông tin khách hàng -->
+                <div class="col-7">
+                    <div class="text-bg-success  p-2">Chi tiết thuê phòng</div>
+                    <div class="row table-container">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên khách hàng</th>
+                                <th>Thời gian nhận phòng</th>
+                                <th>Thời gian dự kiến trả phòng</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{ thue_phong.maThuePhong }}</td>
+                                <td>{{ thue_phong.khachHang.hoVaTenDem }}</td>
+                                <td>{{ thue_phong.ngayNhanPhong }}</td>
+                                <td>{{ thue_phong.ngayTraPhong }}</td>
+                                <td>{{ thue_phong.trangThai }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
+                    <!-- Chi tiết dịch vụ -->
+                    <div class="text-bg-success p-2">Chi tiết dịch vụ</div>
+                    <div class="row table-container">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Số lượng</th>
+                                <th>Tên dịch vụ</th>
+                                <th>Giá bán</th>
+                                <th>Thành tiền</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for thueDichVu in thue_dich_vus %}
+                            <tr>
+                                <td>{{ thueDichVu.maThueDichVu }}</td>
+                                <td>{{ thueDichVu.soLuong }}</td>
+                                <td>{{ thueDichVu.dichVu.tenDichVu }}</td>
+                                <td>{{ thueDichVu.dichVu.gia }}</td>
+                                <td>{{ thueDichVu.thanhTien }}</td>
+                                <td>
+                                    <a href="{% url 'delete_thue_dich_vu' thueDichVu.maThueDichVu thue_phong.phong.maPhong %}"
+                                       class="btn btn-danger">
+                                        <i class="fas fa-minus"></i>
+                                    </a>
+                                    <a href="{% url 'update_thue_dich_vu' thueDichVu.maThueDichVu thue_phong.phong.maPhong %}"
+                                       class="btn btn-warning">
+                                        <i style="color: white;" class="fas fa-plus"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <!-- Dịch vụ -->
+                <div class="col-5">
+                    <div class="text-bg-primary p-2">Dịch vụ</div>
+                    <br>
+                    <div class="text-center">
+                        {% for dichVu in dich_vu_list %}
+                        <div class="card text-center" style="width: 10rem; display: inline-block; margin-right: 10px;">
+                            <br>
+                            <img src="{{ dichVu.image }}" alt="{{ dichVu.tenDichVu }}"
+                                 style="width: 60%; height: 60px"/>
+                            <div class="card-body text-center" id="dichvu">
+                                <p>{{ dichVu.tenDichVu }}</p>
+                                <form method="post" action="{% url 'add_thue_dich_vu' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="maDichVu" value="{{ dichVu.maDichVu }}"/>
+                                    <input type="hidden" name="maThuePhong" value="{{ thue_phong.maThuePhong }}"/>
+                                    <input type="hidden" name="maPhong" value="{{ thue_phong.phong.maPhong }}"/>
+                                    <input type="hidden" name="maNhanVien"
+                                           value="1"/>
+                                    <button type="submit" class="custom-button">Thuê dịch vụ</button>
+                                </form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    /* CSS cho phần "Thanh toán" */
+    .payment-section {
+        background-color: #f8f8f8; /* Màu nền */
+        padding: 20px;
+        border-radius: 5px; /* Độ cong viền */
+        /* 	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5); /* Đổ bóng */
+        */
+    }
+
+    .payment-title {
+        font-size: 24px;
+        color: #333; /* Màu chữ */
+    }
+
+    .payment-details {
+        margin-top: 10px;
+    }
+
+    /* CSS cho nút thanh toán */
+    .payment-button {
+        background-color: #007BFF; /* Màu nền */
+        color: #fff; /* Màu chữ */
+        padding: 10px 20px; /* Khoảng cách bên trong nút */
+        border: none; /* Loại bỏ viền nút */
+        border-radius: 5px; /* Độ cong viền */
+        cursor: pointer; /* Thay đổi hình dạng con trỏ khi di chuột vào nút */
+    }
+
+    .payment-button:hover {
+        background-color: #0056b3; /* Màu nền khi di chuột vào nút */
+    }
+
+    .table-container {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .table thead th {
+        text-align: center;
+    }
+
+    .table {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+    }
+
+    .table thead th {
+        border: 1px solid #000;
+    }
+
+    .table tbody td {
+        border: 1px solid #ccc;
+    }
+
+    #dichvu .p {
+        color: rgb(0, 0, 0);
+        font-size: 20px;
+    }
+
+    .custom-button {
+        background-color: #00CC00;
+        color: #fff;
+        padding: 5px 5px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .custom-button:hover {
+        background-color: #00BB00;
+    }
+</style>
+</body>
+{% include 'myapp/file/js.html' %}
+</html>
