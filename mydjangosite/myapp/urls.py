@@ -36,6 +36,6 @@ urlpatterns = [
          name='update_thue_dich_vu'),
     path('add_thue_dich_vu', views.add_thue_dich_vu, name='add_thue_dich_vu'),
     path('login', views.login, name='login'),
-    path('process_login/', views.process_login, name='process_login'),
+    path('process_login', views.process_login, name='process_login'),
 
 ]

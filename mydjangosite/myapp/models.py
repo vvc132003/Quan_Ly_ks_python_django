@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.hashers import make_password, check_password
 
 
 class Product(models.Model):
@@ -15,6 +17,7 @@ class Phong(models.Model):
     giaTien = models.DecimalField(max_digits=10, decimal_places=2)
 
 
+
 class NhanVien(models.Model):
     maNhanVien = models.AutoField(primary_key=True)
     hoVaTenDem = models.CharField(max_length=255)
@@ -23,6 +26,10 @@ class NhanVien(models.Model):
     taiKhoan = models.CharField(max_length=255)
     matKhau = models.CharField(max_length=255)
     image = models.CharField(max_length=255)
+
+    def check_password(self, raw_password):
+        # Thực hiện kiểm tra mật khẩu ở đây, ví dụ:
+        return self.matKhau == raw_password
 
 
 class KhachHang(models.Model):
@@ -34,6 +41,10 @@ class KhachHang(models.Model):
     diaChi = models.TextField()
     taiKhoan = models.CharField(max_length=255)
     matKhau = models.CharField(max_length=255)
+
+    def check_password(self, raw_password):
+        # Thực hiện kiểm tra mật khẩu ở đây, ví dụ:
+        return self.matKhau == raw_password
 
 
 class ThuePhong(models.Model):

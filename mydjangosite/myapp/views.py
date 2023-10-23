@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from .models import Product
 from django.urls import reverse
-from decimal import Decimal
-from .models import Phong, ThuePhong, KhachHang, DichVu, ThueDichVu
-from .models import NhanVien  # Import your custom user model
-from .form import ProductForm, ProductUpdateForm, LoginForm
-from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.models import User
+from .models import Phong, ThuePhong, KhachHang, DichVu, ThueDichVu, NhanVien, NhanPhong
+from .form import ProductForm, ProductUpdateForm
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.hashers import check_password
 
 from datetime import datetime, timedelta  # Import mô-đun datetime và timedelta
 
@@ -16,11 +16,11 @@ from datetime import datetime, timedelta  # Import mô-đun datetime và timedel
 # Create your views here.
 
 def add_thuephong(request, maPhong):
-    loggedInUser = request.session.get('loggedInUser', None)
-    fullName = request.session.get('fullName', None)
-    if loggedInUser is not None:
+    if 'username' in request.session and 'full_name' in request.session:
+        username = request.session['username']
+        full_name = request.session['full_name']
         return render(request, 'myapp/add/add_thuephong.html',
-                      {'loggedInUser': loggedInUser, 'fullName': fullName, "maPhong": maPhong})
+                      {'maPhong': maPhong, 'username': username, 'full_name': full_name})
     else:
         return redirect('login')
 
@@ -32,6 +32,7 @@ def savethuephong(requestk, maPhong):
         email = requestk.POST.get('email')
         cccd = requestk.POST.get('cccd')
         diaChi = requestk.POST.get('diaChi')
+        maNhanVien = requestk.POST.get("maNhanVien")
         khach_hang = KhachHang.objects.create(
             hoVaTenDem=hoVaTenDem,
             soDienThoai=soDienThoai,
@@ -46,9 +47,15 @@ def savethuephong(requestk, maPhong):
             ngayTraPhong=timezone.now() + timezone.timedelta(hours=1),
             trangThai="Đang thuê",
             tongTien=0,
-            tienDatCoc=0
+            tienDatCoc=0,
+            nhanVien_id=maNhanVien
+        )
+        nhan_phong = NhanPhong(
+            thuePhong=thue_phong,
+            ngayNhanPhong=timezone.now(),
         )
         thue_phong.save()
+        nhan_phong.save()
         Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="có khách")
         return redirect('list_rooms')
 
@@ -127,32 +134,6 @@ def add_thue_dich_vu(request):
     return redirect(reverse('view_thue_phong', args=[maPhong]))
 
 
-def login(request):
-    return render(request, 'myapp/rooms/login.html')
-
-
-def process_login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            taiKhoan = form.cleaned_data['taiKhoan']
-            matKhau = form.cleaned_data['matKhau']
-            try:
-                nhanvien = NhanVien.objects.get(taiKhoan=taiKhoan)
-                if matKhau == nhanvien.matKhau:
-                    user = authenticate(request, username=taiKhoan, password=matKhau)
-                    if user is not None:
-                        login(request, user)
-                        request.session['loggedInUser'] = nhanvien.taiKhoan
-                        request.session['fullName'] = nhanvien.hoVaTenDem
-                    return redirect('list_rooms')
-            except NhanVien.DoesNotExist:
-                pass
-    else:
-        form = LoginForm()
-    return render(request, 'myapp/rooms/login.html', {'form': form})
-
-
 def add_product(requests):
     new_product = Product(name="Product Name", description="Product Description", price=29.99)
     new_product.save()
@@ -195,12 +176,44 @@ def update_product(request, product_id):
     return render(request, 'myapp/update_product.html', {'form': form, 'product': product})
 
 
+def login(request):
+    return render(request, 'myapp/rooms/login.html', {})
+
+
+def process_login(request):
+    if request.method == 'POST':
+        tai_khoan = request.POST['taiKhoan']
+        mat_khau = request.POST['matKhau']
+        try:
+            employee = NhanVien.objects.get(taiKhoan=tai_khoan)
+            if employee.matKhau == mat_khau:
+                request.session['username'] = employee.maNhanVien
+                request.session['full_name'] = employee.hoVaTenDem
+                return redirect('list_rooms')
+            else:
+                return render(request, 'myapp/rooms/login.html',
+                              {'error_message': 'Tên đăng nhập hoặc mật khẩu không đúng'})
+        except NhanVien.DoesNotExist:
+            try:
+                khachHang = KhachHang.objects.get(taiKhoan=tai_khoan)
+                if khachHang.matKhau == mat_khau:
+                    request.session['username'] = khachHang.maKhachHang
+                    request.session['full_name'] = khachHang.hoVaTenDem
+                    return redirect('product_list')
+                else:
+                    return render(request, 'myapp/rooms/login.html',
+                                  {'error_message': 'Tên đăng nhập hoặc mật khẩu không đúng'})
+            except KhachHang.DoesNotExist:
+                return render(request, 'myapp/rooms/login.html', {'error_message': 'Tài khoản không tồn tại'})
+    return render(request, 'myapp/rooms/login.html')
+
+
 def list_rooms(request):
-    loggedInUser = request.session.get('loggedInUser', None)
-    fullName = request.session.get('fullName', None)
-    if loggedInUser is not None:
-        phongs = Phong.objects.all()  # Lấy danh sách các phòng
+    phongs = Phong.objects.all()  # Lấy danh sách các phòng
+    if 'username' in request.session and 'full_name' in request.session:
+        username = request.session['username']
+        full_name = request.session['full_name']
         return render(request, 'myapp/rooms/list_rooms.html',
-                      {'loggedInUser': loggedInUser, 'fullName': fullName, 'rooms': phongs})
-    else:
-        return redirect('login')
+                      {'username': username, 'full_name': full_name, 'rooms': phongs})
+    # Nếu người dùng chưa đăng nhập, hiển thị danh sách phòng
+    return render(request, 'myapp/rooms/login.html')
