@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from .models import Product
 from django.urls import reverse
+from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Phong, ThuePhong, KhachHang, DichVu, ThueDichVu, NhanVien, NhanPhong
+from .models import Phong, ThuePhong, KhachHang, DichVu, ThueDichVu, NhanVien, NhanPhong, TraPhong
 from .form import ProductForm, ProductUpdateForm
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -66,6 +67,28 @@ def savethuephong(requestk, maPhong):
     return render(requestk, 'myapp/add_thuephong.html', {"maPhong": maPhong})
 
 
+def add_traphong(request):
+    if request.method == "POST":
+        ma_thue_phong = request.POST.get("maThuePhong")
+        ma_phong = request.POST.get("maPhong")
+        tong_tien = request.POST.get("tongTien")
+        ma_nhan_vien = request.POST.get("maNhanVien")
+        gia_tien = request.POST.get("giaTien")
+        tien_dat_coc = request.POST.get("tienDatCoc")
+        tong_tien_khach_hang = float(tong_tien) + float(gia_tien) - float(tien_dat_coc)
+        tra_phong = TraPhong(thuePhong=ThuePhong.objects.get(maThuePhong=ma_thue_phong),
+                             nhanVien=NhanVien.objects.get(maNhanVien=ma_nhan_vien), tongTien=tong_tien_khach_hang,
+                             ngayTraPhong=datetime.now())
+        tra_phong.save()
+        ThuePhong.objects.filter(maThuePhong=ma_thue_phong).update(tongTien=tong_tien, trangThai="Đã trả")
+        # Tạo logic cập nhật roomService.updatesuachua(maPhong) ở đây
+        Phong.objects.filter(maPhong=ma_phong).update(tinhTrangPhong="đang sửa chữa")
+        messages.success(request, "Thanh toán thành công!")
+        return redirect("list_rooms")
+    else:
+        return render(request, 'error_page.html', {'error_message': 'Invalid Request'})
+
+
 def view_thue_phong(request, maPhong):
     # Lấy thông tin thuê phòng theo mã phòng và trạng thái "Đang thuê"
     thue_phong = get_object_or_404(ThuePhong, phong__maPhong=maPhong, trangThai='Đang thuê')
@@ -73,7 +96,7 @@ def view_thue_phong(request, maPhong):
     thue_dich_vus = ThueDichVu.objects.filter(thuePhong=thue_phong)
     # Tính tổng tiền từ các dịch vụ
     total_cost = thue_dich_vus.aggregate(total=Sum('thanhTien'))['total'] or 0
-    total_cost_vnd = number_format(total_cost, force_grouping=True)
+    # total_cost_vnd = number_format(total_cost, force_grouping=True)
     # Tổng tiền của thuê phòng và dịch vụ
     total_payment = thue_phong.phong.giaTien + total_cost - thue_phong.tienDatCoc
     total_payment_vnd = number_format(total_payment, force_grouping=True)
@@ -87,7 +110,7 @@ def view_thue_phong(request, maPhong):
         'thue_phong': thue_phong,
         'thue_dich_vus': thue_dich_vus,
         'dich_vu_list': dich_vu_list,
-        'totalCost': total_cost_vnd,
+        'totalCost': total_cost,
         'totalPayment': total_payment_vnd,
         'gia_tien_phong': gia_tien_phong_formatted,
         'tien_dat_coc': tien_dat_coc_formatted,

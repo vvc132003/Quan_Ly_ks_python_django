@@ -1,5 +1,26 @@
 <title>Quản lý phòng</title>
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <div class="midde_cont">
+    <!-- Tạo modal -->
+    <div class="modal fade" id="paymentSuccessModal" tabindex="-1" role="dialog"
+         aria-labelledby="paymentSuccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    {% for message in messages %}
+                    <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+                    {% endfor %}
+                    <p>Thanh toán thành công !!!</p>
+                    <i class="fas fa-check-circle fa-5x" style="color: green;"></i>
+                    <!-- Biểu tượng thành công -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div style="padding: 0px 15px;">
         <div class="row">
             <div class="col-5">
@@ -82,3 +103,50 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var paymentSuccessMessage = "{{ message }}";
+
+        if (paymentSuccessMessage !== "") {
+            $('#paymentSuccessMessage').text(paymentSuccessMessage);
+            $('#paymentSuccessModal').modal('show');
+        }
+    });
+</script>
+<style>
+    .modal.fade.show {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.5);
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 9999;
+	transition: opacity 0.3s ease;
+}
+
+.modal-content {
+	background-color: #fff;
+	padding: 30px;
+	border-radius: 10px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+	text-align: center;
+	max-width: 1000px;
+	width: 100%;
+	text-align: center;
+}
+
+.modal-content p {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#paymentSuccessMessage {
+	color: green;
+}
+</style>

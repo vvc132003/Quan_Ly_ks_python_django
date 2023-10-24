@@ -80,8 +80,9 @@
                     <div class="text-bg-primary p-2">Thanh toán</div>
                     <div class="payment-section">
                         <div class="payment-details">
-                            <form action="addtraphong" method="post">
-                                <input type="hidden" name="tongTien" value="{{ totalCost }}"/>
+                            <form action="{% url 'add_traphong' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="tongTien" id="tongTien" value="{{ totalCost }}"/>
                                 <p>Tổng Tiền Thuê Dịch Vụ: {{ totalCost }} </p>
                                 <p>Tổng Tiền Phòng: {{ gia_tien_phong }} VNĐ</p>
                                 <p>Tiền đặt cọc: {{ tien_dat_coc }} VNĐ</p>
@@ -132,7 +133,7 @@
 </div>
 <style>
     p{
-    color:red
+    color:black
     }
     /* CSS cho phần "Thanh toán" */
     .payment-section {
