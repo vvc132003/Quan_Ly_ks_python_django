@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth import logout
 
 from datetime import datetime, timedelta  # Import mô-đun datetime và timedelta
 
@@ -33,6 +34,7 @@ def savethuephong(requestk, maPhong):
         cccd = requestk.POST.get('cccd')
         diaChi = requestk.POST.get('diaChi')
         maNhanVien = requestk.POST.get("maNhanVien")
+        tienDatCoc = requestk.POST.get("tienDatCoc")
         khach_hang = KhachHang.objects.create(
             hoVaTenDem=hoVaTenDem,
             soDienThoai=soDienThoai,
@@ -47,7 +49,7 @@ def savethuephong(requestk, maPhong):
             ngayTraPhong=timezone.now() + timezone.timedelta(hours=1),
             trangThai="Đang thuê",
             tongTien=0,
-            tienDatCoc=0,
+            tienDatCoc=tienDatCoc,
             nhanVien_id=maNhanVien
         )
         nhan_phong = NhanPhong(
@@ -208,6 +210,11 @@ def process_login(request):
     return render(request, 'myapp/rooms/login.html')
 
 
+def user_logout(request):
+    logout(request)
+    return redirect('login')  # You
+
+
 def list_rooms(request):
     phongs = Phong.objects.all()  # Lấy danh sách các phòng
     if 'username' in request.session and 'full_name' in request.session:
@@ -217,3 +224,8 @@ def list_rooms(request):
                       {'username': username, 'full_name': full_name, 'rooms': phongs})
     # Nếu người dùng chưa đăng nhập, hiển thị danh sách phòng
     return render(request, 'myapp/rooms/login.html')
+
+
+def homee(request):
+    phongs = Phong.objects.filter(tinhTrangPhong='còn trống')
+    return render(request, 'myapp/rooms/homee.html', {'rooms': phongs})

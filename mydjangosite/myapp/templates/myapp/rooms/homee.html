@@ -1,0 +1,413 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <!-- Font Awesome Stylesheet -->
+    <link rel='stylesheet'
+          href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+    <link rel="stylesheet"
+          href="{% static 'myapp/css/style1.css' %}"/>
+    <link rel="stylesheet"
+          href="{% static 'myapp/css/default.css' %}"/>
+    <link rel="stylesheet"
+          href="{% static 'myapp/css/jquery.fancybox.min.css' %}"/>
+</head>
+<body>
+<div class="animationload">
+    <div class="loader"></div>
+</div>
+
+<div id="wapper">
+    {% include 'myapp/layout/navbarhome.html' %}
+    <br> <br>
+    {% include 'myapp/layout/headerhome.html' %}
+    <br> <br>
+    <div class="cover_news">
+        <div class="wrap1200">
+            <div class="tieude">Tin tức & dịch vụ</div>
+            <div class="slogan">Tọa lạc ngay trung tâm thành phố, là điểm
+                dừng chân lý tưởng cho mọi hành trình của du khách, và các doanh
+                nhân khi đến với chúng tôi
+            </div>
+            <div class="slider_3">
+                <div class="item3">
+                    <a class="img zoom_hinh"
+                       href="10-bai-bien-dep-va-hoang-so-khong-nen-bo-qua-khi-du-lich-vung-tau/">
+                        <img onerror="src='thumb/372x283/1/images/noimage.png'"
+                             src="http://kimnganhotel.com/thumb/372x283/1/upload/news/news_l237-9592.jpg"/>
+                    </a>
+                    <div class="des">
+                        <div class="ngaytao">
+                            <p>18</p>
+                            <span>06/2018</span>
+                        </div>
+                        <a class="ten"
+                           href="10-bai-bien-dep-va-hoang-so-khong-nen-bo-qua-khi-du-lich-vung-tau/">
+                            10 bãi biển đẹp và hoang sơ không nên bỏ qua khi du lịch Vũng
+                            Tà... </a>
+                        <p class="mota">10 bãi biển đẹp và hoang sơ không nên bỏ qua
+                            khi du lịch Vũng Tàu</p>
+                    </div>
+                </div>
+                <div class="item3">
+                    <a class="img zoom_hinh" href="kinh-nghiem-du-lich-vung-tau/">
+                        <img onerror="src='thumb/372x283/1/images/noimage.png'"
+                             src="http://kimnganhotel.com/thumb/372x283/1/upload/news/_banhkhotvungtau-9122.jpg"/>
+                    </a>
+                    <div class="des">
+                        <div class="ngaytao">
+                            <p>08</p>
+                            <span>12/2017</span>
+                        </div>
+                        <a class="ten" href="kinh-nghiem-du-lich-vung-tau/"> Kinh
+                            nghiệm du lịch Vũng Tàu </a>
+                        <p class="mota">- Khi tới Vũng Tàu, Sầm Sơn hay Hạ Long,…hay
+                            những địa danh nổi tiếng khác, khách du lịch cần nắm sơ qua một
+                            vài nơi tham quan, ăn uống, nghi ngơi,...</p>
+                    </div>
+                </div>
+                <div class="item3">
+                    <a class="img zoom_hinh"
+                       href="9-mon-ngon-o-vung-tau-ban-phai-thu-qua-mot-lan/"> <img
+                            onerror="src='thumb/372x283/1/images/noimage.png'"
+                            src="http://kimnganhotel.com/thumb/372x283/1/upload/news/du-lich-vung-tau-cho-xom-luoi-ivivu-5-4988.jpg"/>
+                    </a>
+                    <div class="des">
+                        <div class="ngaytao">
+                            <p>01</p>
+                            <span>01/1970</span>
+                        </div>
+                        <a class="ten"
+                           href="9-mon-ngon-o-vung-tau-ban-phai-thu-qua-mot-lan/"> 9
+                            món ngon ở Vũng Tàu bạn phải thử qua một lần </a>
+                        <p class="mota">9 món ngon ở Vũng Tàu bạn phải thử qua một
+                            lần</p>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+        </div>
+    </div>
+    <div class="cover_footer">
+        <div class="wrap1200 flex" style="padding: 10px 20px;">
+            <div class="col_foot_1">
+                <p>
+                <p>
+						<span style="font-size: 22px;"><span
+                                style="font-family: courier new, courier, monospace;"><span
+                                style="color: rgb(255, 255, 0);">KHÁCH SẠN NGHỈ DƯỠNG KIM
+									NGÂN</span></span></span>
+                </p>
+
+                <p>
+                    <em>Là một trong những khách sạn có chất lượng dịch vụ tốt tại
+                        Tp. Vũng Tàu. Sẽ mang lại sự thoải mái cho gia đình và bạn bè khi
+                        dừng chân tại đây. Với các loại phòng đơn, phòng đôi, phòng ba.
+                        Chúng tôi sẽ là sự lựa chọn tốt nhất cho bạn.</em>
+                </p>
+
+                <p></p>
+
+                <p>
+						<span style="font-size: 14px;"><span
+                                style="font-family: tahoma, geneva, sans-serif;"><span
+                                style="color: #FFA500;">Địa chỉ</span>: <span
+                                style="color: #FFA07A;">243 Lê Hồng Phong, Phường 8, Tp.
+									Vũng Tàu</span></span></span>
+                </p>
+
+                <p>
+						<span style="font-size: 14px;"><span
+                                style="font-family: tahoma, geneva, sans-serif;"><span
+                                style="color: #FFA500;">Email</span>: <span
+                                style="color: #FFA07A;">kimnganhotelvt@gmail.com</span></span></span>
+                </p>
+
+                <p>
+						<span style="font-size: 14px;"><span
+                                style="font-family: tahoma, geneva, sans-serif;"><span
+                                style="color: #FFA500;">Phone</span>: <span
+                                style="color: #FFA07A;">094 824 96 69</span></span></span>
+                </p>
+                </p>
+            </div>
+
+            <div class="col_foot_2">
+                <div class="tieude_footer">Fanpage Facebook</div>
+                <div class="fb-page"
+                     data-href="https://www.facebook.com/Kim-Ng%C3%A2n-Hotel-189001161937499/?modal=admin_todo_tour"
+                     data-tabs="timeline" data-width="500" data-height="185"
+                     data-small-header="true" data-adapt-container-width="true"
+                     data-hide-cover="false" data-show-facepile="true">
+                    <div class="fb-xfbml-parse-ignore">
+                        <blockquote
+                                cite="https://www.facebook.com/Kim-Ng%C3%A2n-Hotel-189001161937499/?modal=admin_todo_tour">
+                            <a
+                                    href="https://www.facebook.com/Kim-Ng%C3%A2n-Hotel-189001161937499/?modal=admin_todo_tour">Facebook</a>
+                        </blockquote>
+                    </div>
+                </div>
+                <div class="mxh">
+                    <span>FOLLOW US: </span> <a class="item_mxh hover_xoay"
+                                                href="https://www.facebook.com/QiNiShopLeGiaSi/"> <img
+                        src="upload/hinhanh/mxh2-2858.png">
+                </a> <a class="item_mxh hover_xoay"
+                        href="https://www.facebook.com/QiNiShopLeGiaSi/"> <img
+                        src="upload/hinhanh/mxh1-4639.png">
+                </a> <a class="item_mxh hover_xoay"
+                        href="https://www.facebook.com/QiNiShopLeGiaSi/"> <img
+                        src="upload/hinhanh/mxh4-9021.png">
+                </a> <a class="item_mxh hover_xoay"
+                        href="https://www.facebook.com/QiNiShopLeGiaSi/"> <img
+                        src="upload/hinhanh/mxh3-7226.png">
+                </a> <a class="item_mxh hover_xoay" href=""> <img
+                        src="upload/hinhanh/mxh5-5990.png">
+                </a>
+                </div>
+            </div>
+
+            <div class="col_foot_3">
+                <div class="tieude_footer">Bản đồ hướng dẫn</div>
+                <div class="map_tt" style="color: #000; font-size: 12px;">
+                    <script type="text/javascript"
+                            src="http://maps.google.com/maps/api/js?key=AIzaSyDV7fuGm6yUzPMx9tflEmKT-QGc9SiQ6J4"></script>
+                    <script>
+                        function initialize2() {
+                            var myLatlng = new google.maps.LatLng(10.350160,
+                                    107.091509);
+                            var mapOptions = {
+                                zoom : 16,
+                                scrollwheel : false,
+                                center : myLatlng
+                            };
+
+                            var map = new google.maps.Map(document
+                                    .getElementById('map_canvas2'), mapOptions);
+
+                            var contentString = "<table><tr><th>Khách sạn Kim Ngân Vũng Tàu</th></tr><tr><td  style='color:#F00;font-weight:bold;'>243 Lê Hồng Phong, Phường 8, Thành Phố Vũng Tàu</td></tr></table>";
+
+                            var infowindow = new google.maps.InfoWindow({
+                                content : contentString
+                            });
+
+                            var marker = new google.maps.Marker({
+                                position : myLatlng,
+                                map : map,
+                                title : 'Khách sạn Kim Ngân Vũng Tàu'
+                            });
+                            infowindow.open(map, marker);
+                        }
+
+                        google.maps.event.addDomListener(window, 'load',
+                                initialize2);
+                    </script>
+                    <div id="map_canvas2" style="width: 100%; height: 240px;"></div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright flex">
+            <div class="info">
+                Copyright @ 2018 by <span>Khách sạn Kim Ngân Vũng Tàu</span> All
+                rights reserved. Design by Nina Co.,Ltd
+            </div>
+            <div class="thongke">
+                <p>
+                    Online: <span>1</span>
+                </p>
+                <p>|</p>
+                <p>
+                    Tổng truy cập: <span>47067</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org/",
+        "@type": "Product",
+        "name": "Khách sạn Kim Ngân l Khách sạn Lê Hồng Phong Vũng Tàu  l Hotel Kim Ngân Vũng Tàu",
+        "image": "http://kimnganhotel.com/upload/hinhanh/",
+        "brand": {
+            "@type": "Thing",
+            "name": "Khách sạn Kim Ngân l Khách sạn Lê Hồng Phong Vũng Tàu  l Hotel Kim Ngân Vũng Tàu"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.4",
+            "ratingCount": "89900"
+        }
+    }
+</script>
+<script type="text/javascript" src="js/my_script.js"></script>
+
+<!--Hover menu-->
+<script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        //Hover vào menu xổ xuống
+        $(".menu ul li").hover(function() {
+            $(this).find('ul:first').css({
+                visibility : "visible",
+                display : "none"
+            }).show(300);
+        }, function() {
+            $(this).find('ul:first').css({
+                visibility : "hidden"
+            });
+        });
+        $(".menu ul li").hover(function() {
+            $(this).find('>a').addClass('active2');
+        }, function() {
+            $(this).find('>a').removeClass('active2');
+        });
+
+        $(".search_h").click(function() {
+            if ($(".search").hasClass('active')) {
+                $(".search").removeClass('active');
+            } else {
+                $(".search").addClass('active');
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript" src="js/slick/slick.min.js"></script>
+<script
+        src="node_modules/php-date-formatter/js/php-date-formatter.min.js"></script>
+<script src="node_modules/jquery-mousewheel/jquery.mousewheel.js"></script>
+
+<script type="text/javascript"
+        src="datetimepicker/jquery.datetimepicker.js"></script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        $('#ngayden').datetimepicker();
+        $('#ngaydi').datetimepicker();
+    });
+</script>
+
+<!-- slider jssor -->
+<script type="text/javascript" src="js/jssorslider/js_jssor_slider.js"></script>
+<script type="text/javascript" src="js/jssorslider/jssor.js"></script>
+<script type="text/javascript" src="js/jssorslider/jssor.slider.js"></script>
+<!-- slider jssor -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.slider_3').slick({
+            infinite : true,//Lặp lại
+            accessibility : true,
+            slidesToShow : 3, //Số item hiển thị
+            slidesToScroll : 1, //Số item cuộn khi chạy
+            autoplay : true, //Tự động chạy
+            autoplaySpeed : 3000, //Tốc độ chạy
+            speed : 1000,//Tốc độ chuyển slider
+            arrows : true, //Hiển thị mũi tên
+            centerMode : false, //item nằm giữa
+            dots : false, //Hiển thị dấu chấm
+            draggable : true, //Kích hoạt tính năng kéo chuột
+            mobileFirst : false,
+            pauseOnHover : true,
+        });
+
+        $('.sliderd_3').slick({
+            lazyLoad : 'ondemand',
+            infinite : true,//Hiển thì 2 mũi tên
+            accessibility : true,
+            vertical : true,//Chay dọc
+            slidesToShow : 3, //Số item hiển thị
+            slidesToScroll : 1, //Số item cuộn khi chạy
+            autoplay : true, //Tự động chạy
+            autoplaySpeed : 3000, //Tốc độ chạy
+            speed : 1000,
+            arrows : false, //Hiển thị mũi tên
+            centerMode : false, //item nằm giữa
+            dots : false, //Hiển thị dấu chấm
+            draggable : true, //Kích hoạt tính năng kéo chuột
+            mobileFirst : false
+        });
+
+        //Video
+        $('.video_click').click(function() {
+            var id = $(this).attr('data-id');
+            if (id != 0)
+                $('.col_video_1').load("ajax/video.php?id=" + id);
+            return false;
+        });
+    });
+
+    $(document).ready(function() {
+        $(".tieude2_dm").click(function() {
+            $(".tieude2_dm").removeClass("active");
+            $(this).addClass("active");
+            var iddm = $(this).data("iddm");
+            $.ajax({
+                url : 'ajax/load_sp.php',
+                type : "POST",
+                dataType : 'html',
+                data : {
+                    iddm : iddm
+                },
+                success : function(kt) {
+                    if (kt != '') {
+                        $('.ajax_kq').html(kt);
+                        $('.slider_3').slick({
+                            infinite : true,//Lặp lại
+                            accessibility : true,
+                            slidesToShow : 3, //Số item hiển thị
+                            slidesToScroll : 1, //Số item cuộn khi chạy
+                            autoplay : true, //Tự động chạy
+                            autoplaySpeed : 3000, //Tốc độ chạy
+                            speed : 1000,//Tốc độ chuyển slider
+                            arrows : true, //Hiển thị mũi tên
+                            centerMode : false, //item nằm giữa
+                            dots : false, //Hiển thị dấu chấm
+                            draggable : true, //Kích hoạt tính năng kéo chuột
+                            mobileFirst : false,
+                            pauseOnHover : true,
+                        });
+                    }
+                }
+            });
+        })
+    })
+</script>
+
+<!--Thêm alt cho hình ảnh-->
+<script type="text/javascript">
+    $(document).ready(function(e) {
+        $('img').each(function(index, element) {
+            if (!$(this).attr('alt') || $(this).attr('alt') == '') {
+                $(this).attr('alt', 'Khách sạn Kim Ngân Vũng Tàu');
+            }
+        });
+    });
+</script>
+
+<!--Tim kiem-->
+<script language="javascript">
+    function doEnter(evt) {
+        var key;
+        if (evt.keyCode == 13 || evt.which == 13) {
+            onSearch(evt);
+        }
+    }
+    function onSearch(evt) {
+        var keyword = $('.keyword').val();
+
+        if (keyword == '') {
+            alert('Bạn chưa nhập từ khóa tìm kiếm');
+        } else {
+            location.href = "tim-kiem.html&keyword=" + keyword;
+            loadPage(document.location);
+        }
+    }
+</script>
+</body>
+<script src="<c:url value='/resources/js/jquery-3.2.1.min.js' />"></script>
+<script src="<c:url value='/resources/js/bootstrap.min.js' />"></script>
+<script src="<c:url value='/resources/js/custom.js' />"></script>
+</html>
