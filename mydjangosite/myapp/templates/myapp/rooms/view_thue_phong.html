@@ -76,6 +76,27 @@
                             </tbody>
                         </table>
                     </div>
+                    <hr>
+                    <div class="text-bg-primary p-2">Thanh toán</div>
+                    <div class="payment-section">
+                        <div class="payment-details">
+                            <form action="addtraphong" method="post">
+                                <input type="hidden" name="tongTien" value="{{ totalCost }}"/>
+                                <p>Tổng Tiền Thuê Dịch Vụ: {{ totalCost }} </p>
+                                <p>Tổng Tiền Phòng: {{ gia_tien_phong }} VNĐ</p>
+                                <p>Tiền đặt cọc: {{ tien_dat_coc }} VNĐ</p>
+                                <p>Tổng Thanh Toán cho Thuê Phòng: {{ totalPayment }}</p>
+                                <input type="hidden" name="tienDatCoc" value="{{ thue_phong.tienDatCoc }}"/>
+                                <input type="hidden" name="maNhanVien"
+                                       value="{{ thue_phong.nhanVien.maNhanVien }}"/>
+                                <input type="hidden" name="maThuePhong" value="{{ thue_phong.maThuePhong }}"/>
+                                <input type="hidden" name="maPhong" value="{{ thue_phong.phong.maPhong }}"/>
+                                <input type="hidden" name="giaTien" value="{{ thue_phong.phong.giaTien }}"/>
+                                <button type="submit" class="payment-button">Thanh toán</button>
+                            </form>
+                        </div>
+                    </div>
+                    <br>
                 </div>
 
 
@@ -110,6 +131,9 @@
     </div>
 </div>
 <style>
+    p{
+    color:red
+    }
     /* CSS cho phần "Thanh toán" */
     .payment-section {
         background-color: #f8f8f8; /* Màu nền */

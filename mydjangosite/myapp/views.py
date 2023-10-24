@@ -10,6 +10,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import logout
+from django.db.models import Sum
+from django.utils.formats import number_format
 
 from datetime import datetime, timedelta  # Import mô-đun datetime và timedelta
 
@@ -65,16 +67,30 @@ def savethuephong(requestk, maPhong):
 
 
 def view_thue_phong(request, maPhong):
-    # hiển thị thue phòng theo maphong và trang thai đang thue
+    # Lấy thông tin thuê phòng theo mã phòng và trạng thái "Đang thuê"
     thue_phong = get_object_or_404(ThuePhong, phong__maPhong=maPhong, trangThai='Đang thuê')
-    # hieent thị thông tin thue dich vụ thoe mathuephong
+    # Lấy thông tin thuê dịch vụ theo mã thuê phòng
     thue_dich_vus = ThueDichVu.objects.filter(thuePhong=thue_phong)
-    # hien thị các dịch vụ
+    # Tính tổng tiền từ các dịch vụ
+    total_cost = thue_dich_vus.aggregate(total=Sum('thanhTien'))['total'] or 0
+    total_cost_vnd = number_format(total_cost, force_grouping=True)
+    # Tổng tiền của thuê phòng và dịch vụ
+    total_payment = thue_phong.phong.giaTien + total_cost - thue_phong.tienDatCoc
+    total_payment_vnd = number_format(total_payment, force_grouping=True)
+    # Lấy danh sách các dịch vụ
     dich_vu_list = DichVu.objects.all()
+    gia_tien_phong = thue_phong.phong.giaTien
+    tien_dat_coc = thue_phong.tienDatCoc
+    gia_tien_phong_formatted = number_format(gia_tien_phong, force_grouping=True)
+    tien_dat_coc_formatted = number_format(tien_dat_coc, force_grouping=True)
     context = {
         'thue_phong': thue_phong,
         'thue_dich_vus': thue_dich_vus,
         'dich_vu_list': dich_vu_list,
+        'totalCost': total_cost_vnd,
+        'totalPayment': total_payment_vnd,
+        'gia_tien_phong': gia_tien_phong_formatted,
+        'tien_dat_coc': tien_dat_coc_formatted,
     }
     return render(request, 'myapp/rooms/view_thue_phong.html', context)
 
