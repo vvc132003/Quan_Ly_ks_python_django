@@ -30,6 +30,7 @@ urlpatterns = [
     path('update_product/<int:product_id>/', views.update_product, name='update_product'),
     path('add_thuephong/<int:maPhong>/', views.add_thuephong, name='add_thuephong'),
     path('savethuephong/<int:maPhong>/', views.savethuephong, name='savethuephong'),
+    path('savedatphongphong/<int:maPhong>/', views.savedatphongphong, name='savedatphongphong'),
     path('view_thue_phong/<int:maPhong>/', views.view_thue_phong, name='view_thue_phong'),
     path('delete_thue_dich_vu/<int:maThueDichVu>/<int:maPhong>/', views.delete_thue_dich_vu,
          name='delete_thue_dich_vu'),
@@ -41,5 +42,7 @@ urlpatterns = [
     path('user_logout', views.user_logout, name='user_logout'),
     path('add_traphong', views.add_traphong, name='add_traphong'),
     path('don_phong/<int:maPhong>/', views.don_phong, name='don_phong'),
+    path('nhan_phong/<int:maPhong>/', views.nhan_phong, name='nhan_phong'),
+    path('addnhanphong', views.addnhanphong, name='addnhanphong'),
 
 ]

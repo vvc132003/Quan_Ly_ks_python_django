@@ -59,7 +59,7 @@
                             Sửa phòng
                         </a>
                         {% elif room.tinhTrangPhong == 'đã đặt' %}
-                        <a href="">
+                        <a href="{% url 'nhan_phong' room.maPhong %}">
                             <i style="font-size: 20px; margin-right: 14px" class="fas fa-check-circle"></i>
                             Check nhận phòng
                         </a>
@@ -100,19 +100,21 @@
         Swal.fire({
             title: 'Thuê phòng thành công!',
             icon: 'success',
-                showConfirmButton: false
+            showConfirmButton: false
 
         });
         {% elif 'warning' in message.tags %}
         Swal.fire({
             title: 'Thanh toán thành công!',
-            icon: 'success',    showConfirmButton: false
+            icon: 'success',
+            showConfirmButton: false
 
         });
         {% elif 'info' in message.tags %}
         Swal.fire({
             title: 'Dọn phòng thành công!',
-            icon: 'success',    showConfirmButton: false
+            icon: 'success',
+            showConfirmButton: false
         });
         {% else %}
         Swal.fire({

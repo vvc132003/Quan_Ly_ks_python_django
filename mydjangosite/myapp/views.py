@@ -67,6 +67,39 @@ def savethuephong(requestk, maPhong):
     return render(requestk, 'myapp/add_thuephong.html', {"maPhong": maPhong})
 
 
+def savedatphongphong(requestk, maPhong):
+    if requestk.method == 'POST':
+        hoVaTenDem = requestk.POST.get('hoVaTenDem')
+        soDienThoai = requestk.POST.get('soDienThoai')
+        email = requestk.POST.get('email')
+        cccd = requestk.POST.get('cccd')
+        diaChi = requestk.POST.get('diaChi')
+        maNhanVien = requestk.POST.get("maNhanVien")
+        tienDatCoc = requestk.POST.get("tienDatCoc")
+        khach_hang = KhachHang.objects.create(
+            hoVaTenDem=hoVaTenDem,
+            soDienThoai=soDienThoai,
+            email=email,
+            cccd=cccd,
+            diaChi=diaChi
+        )
+        thue_phong = ThuePhong(
+            khachHang=khach_hang,
+            phong_id=maPhong,
+            ngayNhanPhong=timezone.now(),
+            ngayTraPhong=timezone.now() + timezone.timedelta(hours=1),
+            trangThai="Đã đặt",
+            tongTien=0,
+            tienDatCoc=tienDatCoc,
+            nhanVien_id=maNhanVien
+        )
+        thue_phong.save()
+        Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="đã đặt")
+        messages.success(requestk, "Đặt phòng thành công thành công!")
+        return redirect('homee')
+    return render(requestk, 'myapp/add_thuephong.html', {"maPhong": maPhong})
+
+
 def add_traphong(request):
     if request.method == "POST":
         ma_thue_phong = request.POST.get("maThuePhong")
@@ -252,7 +285,7 @@ def process_login(request):
                 if khachHang.matKhau == mat_khau:
                     request.session['username'] = khachHang.maKhachHang
                     request.session['full_name'] = khachHang.hoVaTenDem
-                    return redirect('product_list')
+                    return redirect('homee')
                 else:
                     return render(request, 'myapp/rooms/login.html',
                                   {'error_message': 'Tên đăng nhập hoặc mật khẩu không đúng'})
@@ -279,4 +312,35 @@ def list_rooms(request):
 
 def homee(request):
     phongs = Phong.objects.filter(tinhTrangPhong='còn trống')
-    return render(request, 'myapp/rooms/homee.html', {'rooms': phongs})
+    return render(request, 'myapp/rooms/home.html', {'rooms': phongs})
+
+
+def nhan_phong(request, maPhong):
+    thue_phong_list = ThuePhong.objects.filter(phong__maPhong=maPhong, trangThai='Đã đặt')
+    context = {'thuePhongList': thue_phong_list}
+    return render(request, 'myapp/rooms/nhanphong.html', context)
+
+
+def addnhanphong(request):
+    if request.method == 'POST':
+        maPhong = request.POST.get('maPhong')
+        maThuePhong = request.POST.get('maThuePhong')
+        cccd = request.POST.get('cccd')
+        khachHang = KhachHang.objects.filter(cccd=cccd).first()
+        if khachHang is not None:
+            thuePhong = ThuePhong.objects.get(maThuePhong=maThuePhong)
+            nhan_phong = NhanPhong(
+                thuePhong=thuePhong,
+                ngayNhanPhong=timezone.now(),
+            )
+            nhan_phong.save()
+            Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="có khách")
+            ThuePhong.objects.filter(maThuePhong=maThuePhong).update(trangThai="Đang thuê")
+            messages.success(request, 'Nhận phòng thành công!')
+            return redirect('list_rooms')
+        else:
+            messages.error(request, 'CCCD không hợp lệ. Vui lòng kiểm tra lại!')
+            return redirect(reverse('nhan_phong', args=[maPhong]))
+
+    # Xử lý trường hợp không phải là POST request
+    return render(request, {})

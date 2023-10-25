@@ -1,0 +1,145 @@
+<div class="" style="padding: 10px 80px;">
+    <div class="row">
+        <div class="col-3">
+            <div class="card mt-4">
+                <div class="bg-warning-custom text-white p-2">
+                    <i class="fa fa-search"></i> Tìm kiếm
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-5">
+                                    <label for="roomType" class="mr-2 small">Loại Phòng:</label>
+                                </div>
+                                <div class="col-7">
+                                    <select class="form-control form-control-sm " id="roomType">
+                                        <option value="phong1">Phòng 1</option>
+                                        <option value="phong2">Phòng 2</option>
+                                        <option value="phong3">Phòng 3</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="priceRange">Giá tiền:</label>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="minPrice" placeholder="Từ">
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="maxPrice" placeholder="Đến">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn bg-warning-custom text-white float-right">Tìm</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="container">
+                <div class="row">
+                    {% for room in rooms %}
+                    <div class="col-4">
+                        <div class="card mt-4">
+                            <img src="https://noithattrevietnam.com/uploaded/2021/11/0-hinh-anh-phong-ngu-dep-hien-dai%20%287%29.jpg"
+                                 class="img-fluid" alt="Phòng Deluxe">
+                            <div class="card-body text-center">
+                                <p class="card-title">Phòng {{ room.maPhong }} <span>1000000</span></p>
+                                <a href="" class="btn btn-danger" data-toggle="modal"
+                                   data-target="#rentModal{{ room.maPhong }}">Thuê
+                                    Phòng</a>
+                                <!-- Modal thuê phòng -->
+                                <div class="modal fade" id="rentModal{{ room.maPhong }}" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Đăng ký thuê phòng
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post"
+                                                      action="{% url 'savedatphongphong' maPhong=room.maPhong %}"
+                                                      class="custom-form">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            {% csrf_token %}
+                                                            <div class="form-group">
+                                                                <input type="hidden" name="maPhong"
+                                                                       value="{{ room.maPhong }}" class="form-control"
+                                                                       required="required"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="hoVaTenDem" class="form-label">Tên khách
+                                                                    hàng:</label>
+                                                                <input type="text" name="hoVaTenDem" id="hoVaTenDem"
+                                                                       class="form-control"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="soDienThoai" class="form-label">Số điện
+                                                                    thoại:</label>
+                                                                <input type="text" name="soDienThoai"
+                                                                       id="soDienThoai" class="form-control"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="diaChi" class="form-label">Địa
+                                                                    chỉ:</label>
+                                                                <input type="text" name="diaChi" id="diaChi"
+                                                                       class="form-control"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="cccd" class="form-label">CCCD:</label>
+                                                                <input type="text" name="cccd" id="cccd"
+                                                                       class="form-control"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="email" class="form-label">Email:</label>
+                                                                <input type="email" name="email" id="email"
+                                                                       class="form-control"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="tienDatCoc">Tiền đặt cọc:</label>
+                                                                <input type="text" name="tienDatCoc" id="tienDatCoc"
+                                                                       class="form-control"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="hidden" name="maNhanVien" value="1"
+                                                                       id="maNhanVien" class="form-control"
+                                                                       required="required"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button"
+                                                                class="btn btn-secondary custom-btn-secondary"
+                                                                data-dismiss="modal">HUỶ
+                                                        </button>
+                                                        <input type="submit" value="ĐẶT PHÒNG"
+                                                               class="btn btn-primary custom-button"/>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" class="btn btn-info"
+                                   style="background-color: #088de6; border-color: #b3e0ff;">Chi
+                                    tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
