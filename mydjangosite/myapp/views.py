@@ -62,6 +62,7 @@ def savethuephong(requestk, maPhong):
         thue_phong.save()
         nhan_phong.save()
         Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="có khách")
+        messages.success(requestk, "Thuê phòng thành công thành công!")
         return redirect('list_rooms')
 
     return render(requestk, 'myapp/add_thuephong.html', {"maPhong": maPhong})

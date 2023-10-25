@@ -5,21 +5,26 @@
 <div class="midde_cont">
     <!-- Tạo modal -->
     <div class="modal fade" id="paymentSuccessModal" tabindex="-1" role="dialog"
-         aria-labelledby="paymentSuccessModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+         aria-labelledby="paymentSuccessModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    {% for message in messages %}
-                    <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
-                    {% endfor %}
-                    <p>Thanh toán thành công !!!</p>
-                    <i class="fas fa-check-circle fa-5x" style="color: green;"></i>
-                    <!-- Biểu tượng thành công -->
+                    {% if messages %}
+                    <ul class="list-group">
+                        {% for message in messages %}
+                        <li class="list-group-item {% if message.tags %}{{ message.tags }}{% endif %}">
+                        <span>
+                            <i class="{% if message.tags == 'success' %}fas fa-check-circle text-success{% elif message.tags == 'warning' %}fas fa-exclamation-triangle text-warning{% elif message.tags == 'error' %}fas fa-exclamation-circle text-danger{% else %}fas fa-info-circle{% endif %}"></i>
+                            {{ message }}
+                        </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
-
 
     <div style="padding: 0px 15px;">
         <div class="row">
@@ -107,46 +112,45 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function() {
-        var paymentSuccessMessage = "{{ message }}";
+        var paymentSuccessMessage = "{% if messages %}{% for message in messages %}{{ message }}{% endfor %}{% endif %}";
 
-        if (paymentSuccessMessage !== "") {
-            $('#paymentSuccessMessage').text(paymentSuccessMessage);
+        if (paymentSuccessMessage.trim() !== "") {
             $('#paymentSuccessModal').modal('show');
         }
     });
 </script>
+
+
 <style>
     .modal.fade.show {
-	display: flex !important;
-	align-items: center;
-	justify-content: center;
-	background: rgba(0, 0, 0, 0.5);
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 9999;
-	transition: opacity 0.3s ease;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .modal.fade {
+        transition: none;
+    }
+    @keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    75% {
+        transform: translateX(-5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
 }
 
-.modal-content {
-	background-color: #fff;
-	padding: 30px;
-	border-radius: 10px;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-	text-align: center;
-	max-width: 1000px;
-	width: 100%;
-	text-align: center;
+.list-group-item i {
+    animation: shake 0.5s; /* Áp dụng animation cho biểu tượng */
+    animation-iteration-count: infinite; /* Lặp vô hạn */
 }
 
-.modal-content p {
-	font-size: 20px;
-	font-weight: bold;
-}
-
-#paymentSuccessMessage {
-	color: green;
-}
 </style>
