@@ -64,7 +64,6 @@ def savethuephong(requestk, maPhong):
         Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="có khách")
         messages.success(requestk, "Thuê phòng thành công thành công!")
         return redirect('list_rooms')
-
     return render(requestk, 'myapp/add_thuephong.html', {"maPhong": maPhong})
 
 
@@ -83,8 +82,8 @@ def add_traphong(request):
         tra_phong.save()
         ThuePhong.objects.filter(maThuePhong=ma_thue_phong).update(tongTien=tong_tien, trangThai="Đã trả")
         # Tạo logic cập nhật roomService.updatesuachua(maPhong) ở đây
-        Phong.objects.filter(maPhong=ma_phong).update(tinhTrangPhong="đang sửa chữa")
-        messages.success(request, "Thanh toán thành công!")
+        Phong.objects.filter(maPhong=ma_phong).update(tinhTrangPhong="chưa dọn")
+        messages.warning(request, "Thanh toán thành công!")
         return redirect("list_rooms")
     else:
         return render(request, 'error_page.html', {'error_message': 'Invalid Request'})
@@ -117,6 +116,18 @@ def view_thue_phong(request, maPhong):
         'tien_dat_coc': tien_dat_coc_formatted,
     }
     return render(request, 'myapp/rooms/view_thue_phong.html', context)
+
+
+def don_phong(request, maPhong):
+    Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="còn trống")
+    messages.info(request, "Dọn phòng thành công!")
+    return redirect('list_rooms')
+
+
+# def sua_phong(request, maPhong):
+#     Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="Đang sửa chữa")
+#     messages.error(request, "Đang sửa chữa!")
+#     return redirect('list_rooms')
 
 
 def delete_thue_dich_vu(requestdelete, maThueDichVu, maPhong):

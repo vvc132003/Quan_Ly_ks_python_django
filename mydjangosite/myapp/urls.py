@@ -40,5 +40,6 @@ urlpatterns = [
     path('process_login', views.process_login, name='process_login'),
     path('user_logout', views.user_logout, name='user_logout'),
     path('add_traphong', views.add_traphong, name='add_traphong'),
+    path('don_phong/<int:maPhong>/', views.don_phong, name='don_phong'),
 
 ]
