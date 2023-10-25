@@ -1,4 +1,3 @@
-
 <nav id="sidebar">
     <div class="sidebar_blog_1">
         <div class="sidebar-header">
@@ -27,7 +26,7 @@
         <h4>Trang chủ</h4>
         <ul class="list-unstyled components">
             <!-- Nhân viên -->
-            <li><a href=""><i class="fas fa-bed orange_color"></i> <span>Phòng</span></a></li>
+            <li><a href="{% url 'list_rooms' %}"><i class="fas fa-bed orange_color"></i> <span>Phòng</span></a></li>
             <li><a href=""><i class="fas fa-user orange_color"></i> <span>Nhân Viên</span></a></li>
             <li><a href=""><i class="fas fa-user-tie red_color"></i> <span>Khách Hàng</span></a></li>
             <li><a href=""><i class="fas fa-concierge-bell purple_color2"></i> <span>Dịch Vụ</span></a></li>
@@ -42,7 +41,8 @@
                 </ul>
             </li>
             <li><a href=""><i class="fa fa-bar-chart-o green_color"></i> <span>Thống kê</span></a></li>
-            <li><a href="{% url 'user_logout' %}"><i class="fas fa-sign-out-alt yellow_color"></i> <span>Đăng Xuất</span></a></li>
+            <li><a href="{% url 'user_logout' %}"><i class="fas fa-sign-out-alt yellow_color"></i>
+                <span>Đăng Xuất</span></a></li>
         </ul>
     </div>
     <style>
