@@ -6,17 +6,17 @@
                     <i class="fa fa-search"></i> Tìm kiếm
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form action="{% url 'homee' %}" method="get">
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-5">
-                                    <label for="roomType" class="mr-2 small">Loại Phòng:</label>
+                                    <label for="maPhong" class="mr-2 small">Phòng:</label>
                                 </div>
                                 <div class="col-7">
-                                    <select class="form-control form-control-sm " id="roomType">
-                                        <option value="phong1">Phòng 1</option>
-                                        <option value="phong2">Phòng 2</option>
-                                        <option value="phong3">Phòng 3</option>
+                                    <select class="form-control form-control-sm" id="maPhong" name="maPhong">
+                                        {% for room in rooms %}
+                                        <option value="{{ room.maPhong }}">{{ room.maPhong }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                             </div>

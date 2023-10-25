@@ -306,13 +306,25 @@ def list_rooms(request):
         full_name = request.session['full_name']
         return render(request, 'myapp/rooms/list_rooms.html',
                       {'username': username, 'full_name': full_name, 'rooms': phongs})
-    # Nếu người dùng chưa đăng nhập, hiển thị danh sách phòng
     return render(request, 'myapp/rooms/login.html')
 
 
 def homee(request):
-    phongs = Phong.objects.filter(tinhTrangPhong='còn trống')
-    return render(request, 'myapp/rooms/home.html', {'rooms': phongs})
+    if request.method == 'GET':
+        maPhong = request.GET.get('maPhong')
+        if 'username' in request.session and 'full_name' in request.session:
+            username = request.session['username']
+            full_name = request.session['full_name']
+            if maPhong:
+                phongs = Phong.objects.filter(maPhong=maPhong)
+            else:
+                phongs = Phong.objects.all()
+
+            return render(request, 'myapp/rooms/home.html',
+                          {'username': username, 'full_name': full_name, 'rooms': phongs})
+        else:
+            return render(request, 'myapp/rooms/login.html')
+    return render(request, 'myapp/rooms/search_form.html')
 
 
 def nhan_phong(request, maPhong):
