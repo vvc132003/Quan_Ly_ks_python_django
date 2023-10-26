@@ -1,16 +1,13 @@
-# This is a sample Python script.
+# n = input("Nhập dãy số: ")
+# so_list = [float(x) for x in n.split()]
+# tong = 0
+# for so in so_list:
+#     tong += so
+# trungbinh = tong / len(so_list)
+# print(f"Tổng của dãy: {tong}, Trung bình của dãy: {trungbinh}")
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+A = [-1, 0, 5, -7, 6, 8]
+for x in A[:]:
+    if x < 0:
+        A.remove(x)
+print(A)

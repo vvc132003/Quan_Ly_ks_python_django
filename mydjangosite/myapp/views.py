@@ -318,8 +318,7 @@ def homee(request):
             if maPhong:
                 phongs = Phong.objects.filter(maPhong=maPhong)
             else:
-                phongs = Phong.objects.all()
-
+                phongs = Phong.objects.filter(tinhTrangPhong="còn trống")
             return render(request, 'myapp/rooms/home.html',
                           {'username': username, 'full_name': full_name, 'rooms': phongs})
         else:
