@@ -271,6 +271,7 @@ def process_login(request):
             if employee.matKhau == mat_khau:
                 request.session['username'] = employee.maNhanVien
                 request.session['full_name'] = employee.hoVaTenDem
+                request.session['vaiTro'] = employee.vaiTro  # Set the role in the session
                 return redirect('list_rooms')
             else:
                 return render(request, 'myapp/rooms/login.html',
@@ -296,12 +297,17 @@ def user_logout(request):
 
 
 def list_rooms(request):
-    phongs = Phong.objects.all()  # Lấy danh sách các phòng
+    phongs = Phong.objects.all()
     if 'username' in request.session and 'full_name' in request.session:
         username = request.session['username']
         full_name = request.session['full_name']
-        return render(request, 'myapp/rooms/list_rooms.html',
-                      {'username': username, 'full_name': full_name, 'rooms': phongs})
+        role = request.session.get('vaiTro', None)
+        if role == "Quản Lý":
+            return render(request, 'myapp/rooms/list_rooms.html',
+                          {'username': username, 'full_name': full_name, 'rooms': phongs})
+        elif role == "Nhân Viên":
+            return render(request, 'myapp/rooms/list_rooms.html',
+                          {'username': username, 'full_name': full_name, 'rooms': phongs})
     return render(request, 'myapp/rooms/login.html')
 
 

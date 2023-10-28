@@ -26,6 +26,7 @@ class NhanVien(models.Model):
     taiKhoan = models.CharField(max_length=255)
     matKhau = models.CharField(max_length=255)
     image = models.CharField(max_length=255)
+    vaiTro = models.CharField(max_length=255)
 
     def check_password(self, raw_password):
         # Thực hiện kiểm tra mật khẩu ở đây, ví dụ:
