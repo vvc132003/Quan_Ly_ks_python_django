@@ -41,6 +41,7 @@ class KhachHang(models.Model):
     diaChi = models.TextField()
     taiKhoan = models.CharField(max_length=255)
     matKhau = models.CharField(max_length=255)
+    trangThai = models.CharField(max_length=255)
 
     def check_password(self, raw_password):
         # Thực hiện kiểm tra mật khẩu ở đây, ví dụ:
@@ -64,6 +65,7 @@ class DichVu(models.Model):
     tenDichVu = models.CharField(max_length=255)
     moTa = models.TextField()
     gia = models.DecimalField(max_digits=10, decimal_places=2)
+    trangThai = models.CharField(max_length=255)
     image = models.TextField()
 
 

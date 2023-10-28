@@ -3,7 +3,8 @@
         <div class="sidebar-header">
             <div class="logo_section">
                 <a href="">
-                    <img class="logo_icon img-responsive" src="{{ image }}" alt="#"/>
+                    <img class="logo_icon img-responsive"
+                         src="https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg" alt=""/>
                 </a>
             </div>
         </div>
@@ -11,10 +12,11 @@
             <div class="icon_setting"></div>
             <div class="user_profle_side">
                 <div class="user_img">
-                    <img class="img-responsive" src="{{ image }}" alt="#"/>
+                    <img class="img-responsive"
+                         src="https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg" alt="#"/>
                 </div>
                 <div class="user_info">
-                    <h6>{{ namee }}</h6>
+                    <h6>Võ Văn Chính</h6>
                     <p>
                         <span class="online_animation"></span> Online
                     </p>
@@ -28,8 +30,8 @@
             <!-- Nhân viên -->
             <li><a href="{% url 'list_rooms' %}"><i class="fas fa-bed orange_color"></i> <span>Phòng</span></a></li>
             <li><a href=""><i class="fas fa-user orange_color"></i> <span>Nhân Viên</span></a></li>
-            <li><a href=""><i class="fas fa-user-tie red_color"></i> <span>Khách Hàng</span></a></li>
-            <li><a href=""><i class="fas fa-concierge-bell purple_color2"></i> <span>Dịch Vụ</span></a></li>
+            <li><a href="{% url 'khachhang_list' %}"><i class="fas fa-user-tie red_color"></i> <span>Khách Hàng</span></a></li>
+            <li><a href="{% url 'dichvu_list' %}"><i class="fas fa-concierge-bell purple_color2"></i> <span>Dịch Vụ</span></a></li>
             <li>
                 <a href="#apps" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <i class="fa fa-object-group blue2_color"></i> <span>Các loại đơn</span>

@@ -108,6 +108,7 @@ def add_traphong(request):
         ma_nhan_vien = request.POST.get("maNhanVien")
         gia_tien = request.POST.get("giaTien")
         tien_dat_coc = request.POST.get("tienDatCoc")
+        maKhachHang = request.POST.get("maKhachHang")
         tong_tien_khach_hang = float(tong_tien) + float(gia_tien) - float(tien_dat_coc)
         tra_phong = TraPhong(thuePhong=ThuePhong.objects.get(maThuePhong=ma_thue_phong),
                              nhanVien=NhanVien.objects.get(maNhanVien=ma_nhan_vien), tongTien=tong_tien_khach_hang,
@@ -116,6 +117,7 @@ def add_traphong(request):
         ThuePhong.objects.filter(maThuePhong=ma_thue_phong).update(tongTien=tong_tien, trangThai="Đã trả")
         # Tạo logic cập nhật roomService.updatesuachua(maPhong) ở đây
         Phong.objects.filter(maPhong=ma_phong).update(tinhTrangPhong="chưa dọn")
+        KhachHang.objects.filter(maKhachHang=maKhachHang).update(trangThai="hết hoạt động")
         messages.warning(request, "Thanh toán thành công!")
         return redirect("list_rooms")
     else:
@@ -134,7 +136,7 @@ def view_thue_phong(request, maPhong):
     total_payment = thue_phong.phong.giaTien + total_cost - thue_phong.tienDatCoc
     total_payment_vnd = number_format(total_payment, force_grouping=True)
     # Lấy danh sách các dịch vụ
-    dich_vu_list = DichVu.objects.all()
+    dich_vu_list = DichVu.objects.filter(trangThai="còn bán")
     gia_tien_phong = thue_phong.phong.giaTien
     tien_dat_coc = thue_phong.tienDatCoc
     gia_tien_phong_formatted = number_format(gia_tien_phong, force_grouping=True)
@@ -198,25 +200,19 @@ def add_thue_dich_vu(request):
         maThuePhong = request.POST.get("maThuePhong")
         maPhong = request.POST.get("maPhong")
         maNhanVien = request.POST.get("maNhanVien")
-
         thuePhong = get_object_or_404(ThuePhong, pk=maThuePhong)
         dichVu = get_object_or_404(DichVu, pk=maDichVu)
         nhanVien = get_object_or_404(NhanVien, pk=maNhanVien)
-
         thueDichVu = ThueDichVu(
             thuePhong=thuePhong,
             dichVu=dichVu,
             nhanVien=nhanVien,
             soLuong=1
         )
-
-        # Calculate the total cost
         gia = dichVu.gia
         thanhTien = gia * thueDichVu.soLuong
         thueDichVu.thanhTien = thanhTien
-
         thueDichVu.save()
-
     return redirect(reverse('view_thue_phong', args=[maPhong]))
 
 
@@ -337,7 +333,7 @@ def addnhanphong(request):
         maPhong = request.POST.get('maPhong')
         maThuePhong = request.POST.get('maThuePhong')
         cccd = request.POST.get('cccd')
-        khachHang = KhachHang.objects.filter(cccd=cccd).first()
+        khachHang = KhachHang.objects.filter(cccd=cccd, trangThai="đang hoạt động").first()
         if khachHang is not None:
             thuePhong = ThuePhong.objects.get(maThuePhong=maThuePhong)
             nhan_phong = NhanPhong(
@@ -352,6 +348,55 @@ def addnhanphong(request):
         else:
             messages.error(request, 'CCCD không hợp lệ. Vui lòng kiểm tra lại!')
             return redirect(reverse('nhan_phong', args=[maPhong]))
-
-    # Xử lý trường hợp không phải là POST request
     return render(request, {})
+
+
+def dichvu_list(requesto):
+    dichvus = DichVu.objects.filter(trangThai="còn bán").order_by('-maDichVu')
+    return render(requesto, 'myapp/dichvu/dichvu_list.html', {'dichvus': dichvus})
+
+
+def add_dichvu(request):
+    if request.method == 'POST':
+        tenDichVu = request.POST.get('tenDichVu')
+        moTa = request.POST.get('moTa')
+        gia = request.POST.get('gia')
+        image = request.POST.get('image')
+        dichvus = DichVu(tenDichVu=tenDichVu, moTa=moTa, gia=gia, image=image, trangThai="còn bán")
+        dichvus.save()
+        return redirect('dichvu_list')
+    return render(request, 'myapp/dichvu/add_dichvu.html')
+
+
+def update_dichvu(request, maDichVu):
+    dichvu = DichVu.objects.get(maDichVu=maDichVu)
+    if request.method == 'POST':
+        tenDichVu = request.POST.get('tenDichVu')
+        moTa = request.POST.get('moTa')
+        gia = request.POST.get('gia')
+        image = request.POST.get('image')
+        DichVu.objects.filter(maDichVu=maDichVu).update(tenDichVu=tenDichVu, moTa=moTa, gia=gia, image=image,
+                                                        trangThai="còn bán")
+        return redirect('dichvu_list')
+    return render(request, 'myapp/dichvu/update_dichvu.html', {'dichvu': dichvu})
+
+
+def delete_dichvu(requesth, maDichVu):
+    if requesth.method == 'GET':
+        DichVu.objects.filter(maDichVu=maDichVu).update(trangThai="hết bán")
+        messages.success(requesth, 'Xoá thành dịch vụ thành công!')
+        return redirect('dichvu_list')
+    return render(requesth, 'myapp/delete_product_confirm.html', {})
+
+
+def khachhang_list(requesto):
+    khachhangs = KhachHang.objects.filter(trangThai="đang hoạt động").order_by('-maKhachHang')
+    return render(requesto, 'myapp/khachhang/khachhang_list.html', {'khachhangs': khachhangs})
+
+
+def delete_khachhang(requesth, maKhachHang):
+    if requesth.method == 'GET':
+        KhachHang.objects.filter(maKhachHang=maKhachHang).update(trangThai="hết hoạt động")
+        messages.success(requesth, 'Xoá thành dịch vụ thành công!')
+        return redirect('khachhang_list')
+    return render(requesth, 'myapp/delete_product_confirm.html', {})

@@ -20,6 +20,13 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('dichvu_list', views.dichvu_list, name='dichvu_list'),
+    path('delete_dichvu/<int:maDichVu>/', views.delete_dichvu, name='delete_dichvu'),
+    path('add_dichvu', views.add_dichvu, name='add_dichvu'),
+    path('update_dichvu/<int:maDichVu>/', views.update_dichvu, name='update_dichvu'),
+    path('khachhang_list', views.khachhang_list, name='khachhang_list'),
+    path('delete_khachhang/<int:maKhachHang>/', views.delete_khachhang, name='delete_khachhang'),
+
     path('add_thuephong', views.add_thuephong, name='add_thuephong'),
     path('add_product', views.add_product, name='add_product'),
     path('product_list', views.product_list, name='product_list'),
