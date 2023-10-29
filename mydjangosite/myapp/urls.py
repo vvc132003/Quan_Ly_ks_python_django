@@ -26,6 +26,11 @@ urlpatterns = [
     path('update_dichvu/<int:maDichVu>/', views.update_dichvu, name='update_dichvu'),
     path('khachhang_list', views.khachhang_list, name='khachhang_list'),
     path('delete_khachhang/<int:maKhachHang>/', views.delete_khachhang, name='delete_khachhang'),
+    path('nhanvien_list', views.nhanvien_list, name='nhanvien_list'),
+    path('delete_nhanvien/<int:maNhanVien>/', views.delete_nhanvien, name='delete_nhanvien'),
+    path('thuephong_list', views.thuephong_list, name='thuephong_list'),
+    path('traphong_list', views.traphong_list, name='traphong_list'),
+    path('nhanphong_list', views.nhanphong_list, name='nhanphong_list'),
 
     path('add_thuephong', views.add_thuephong, name='add_thuephong'),
     path('add_product', views.add_product, name='add_product'),

@@ -21,12 +21,12 @@ class Phong(models.Model):
 class NhanVien(models.Model):
     maNhanVien = models.AutoField(primary_key=True)
     hoVaTenDem = models.CharField(max_length=255)
-    chucVu = models.CharField(max_length=255)
     luong = models.DecimalField(max_digits=10, decimal_places=2)
     taiKhoan = models.CharField(max_length=255)
     matKhau = models.CharField(max_length=255)
     image = models.CharField(max_length=255)
     vaiTro = models.CharField(max_length=255)
+    trangThai = models.CharField(max_length=255)
 
     def check_password(self, raw_password):
         # Thực hiện kiểm tra mật khẩu ở đây, ví dụ:

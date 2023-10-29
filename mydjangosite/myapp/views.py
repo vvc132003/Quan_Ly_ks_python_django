@@ -267,11 +267,11 @@ def process_login(request):
         tai_khoan = request.POST['taiKhoan']
         mat_khau = request.POST['matKhau']
         try:
-            employee = NhanVien.objects.get(taiKhoan=tai_khoan)
-            if employee.matKhau == mat_khau:
-                request.session['username'] = employee.maNhanVien
-                request.session['full_name'] = employee.hoVaTenDem
-                request.session['vaiTro'] = employee.vaiTro  # Set the role in the session
+            nhanvien = NhanVien.objects.filter(taiKhoan=tai_khoan, trangThai="đang hoạt động").first()
+            if nhanvien.matKhau == mat_khau:
+                request.session['username'] = nhanvien.maNhanVien
+                request.session['full_name'] = nhanvien.hoVaTenDem
+                request.session['vaiTro'] = nhanvien.vaiTro
                 return redirect('list_rooms')
             else:
                 return render(request, 'myapp/rooms/login.html',
@@ -406,3 +406,31 @@ def delete_khachhang(requesth, maKhachHang):
         messages.success(requesth, 'Xoá thành dịch vụ thành công!')
         return redirect('khachhang_list')
     return render(requesth, 'myapp/delete_product_confirm.html', {})
+
+
+def nhanvien_list(requesto):
+    nhanviens = NhanVien.objects.filter(trangThai="đang hoạt động").order_by('-maNhanVien')
+    return render(requesto, 'myapp/nhanvien/nhanvien_list.html', {'nhanviens': nhanviens})
+
+
+def delete_nhanvien(request, maNhanVien):
+    if request.method == 'GET':
+        NhanVien.objects.filter(maNhanVien=maNhanVien).update(trangThai="hết hoạt động")
+        messages.success(request, 'Xoá thành nhân viên thành công!')
+        return redirect('nhanvien_list')
+    return render(request, 'myapp/delete_product_confirm.html', {})
+
+
+def thuephong_list(requesto):
+    thuephongs = ThuePhong.objects.all().order_by('-maThuePhong')
+    return render(requesto, 'myapp/don/thuephong_list.html', {'thuephongs': thuephongs})
+
+
+def traphong_list(requesto):
+    traphongs = TraPhong.objects.all().order_by('-maTraPhong')
+    return render(requesto, 'myapp/don/traphong_list.html', {'traphongs': traphongs})
+
+
+def nhanphong_list(requesto):
+    nhanphongs = NhanPhong.objects.all().order_by('-maNhanPhong')
+    return render(requesto, 'myapp/don/nhanphong_list.html', {'nhanphongs': nhanphongs})

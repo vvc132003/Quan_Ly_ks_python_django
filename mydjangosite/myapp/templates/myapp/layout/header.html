@@ -16,7 +16,7 @@
                          src="https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg" alt="#"/>
                 </div>
                 <div class="user_info">
-                    <h6>Võ Văn Chính</h6>
+                    <h6>{{full_name}}</h6>
                     <p>
                         <span class="online_animation"></span> Online
                     </p>
@@ -29,7 +29,8 @@
         <ul class="list-unstyled components">
             <li><a href="{% url 'list_rooms' %}"><i class="fas fa-bed orange_color"></i> <span>Phòng</span></a></li>
             {% if request.session.vaiTro == "Quản Lý" %} {# Check if the user's role is "quản lý" #}
-            <li><a href="#"><i class="fas fa-user orange_color"></i> <span>Nhân Viên</span></a></li>
+            <li><a href="{% url 'nhanvien_list' %}"><i class="fas fa-user orange_color"></i> <span>Nhân Viên</span></a>
+            </li>
             <li><a href="{% url 'khachhang_list' %}"><i class="fas fa-user-tie red_color"></i>
                 <span>Khách Hàng</span></a></li>
             <li><a href="{% url 'dichvu_list' %}"><i class="fas fa-concierge-bell purple_color2"></i>
@@ -39,9 +40,12 @@
                     <i class="fa fa-object-group blue2_color"></i> <span>Các loại đơn</span>
                 </a>
                 <ul class="collapse list-unstyled" id="apps">
-                    <li><a href=""><i class="fas fa-file-alt blue2_color"></i> <span>Đơn thuê phòng</span></a></li>
-                    <li><a href=""><i class="fas fa-file-invoice blue2_color"></i> <span>Đơn nhận phòng</span></a></li>
-                    <li><a href=""><i class="fas fa-file-signature blue2_color"></i> <span>Đơn trả phòng</span></a></li>
+                    <li><a href="{% url 'thuephong_list' %}"><i class="fas fa-file-alt blue2_color"></i> <span>Đơn thuê phòng</span></a>
+                    </li>
+                    <li><a href="{% url 'nhanphong_list' %}"><i class="fas fa-file-invoice blue2_color"></i> <span>Đơn nhận phòng</span></a>
+                    </li>
+                    <li><a href="{% url 'traphong_list' %}"><i class="fas fa-file-signature blue2_color"></i> <span>Đơn trả phòng</span></a>
+                    </li>
                 </ul>
             </li>
             <li><a href=""><i class="fa fa-bar-chart-o green_color"></i> <span>Thống kê</span></a></li>
