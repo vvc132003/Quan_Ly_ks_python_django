@@ -34,17 +34,22 @@
                             <th>Thời gian nhận phòng</th>
                             <th>Thời gian dự kiến trả phòng</th>
                             <th>Trạng thái</th>
+                            <th>Xem thuê dịch vụ</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for phieuThuePhong in thuephongs %}
+                        {% for thuephong in thuephongs %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>{{phieuThuePhong.khachHang.hoVaTenDem}}</td>
-                            <td>{{phieuThuePhong.ngayNhanPhong}}</td>
-                            <td>{{phieuThuePhong.ngayTraPhong}}</td>
-                            <td>{{phieuThuePhong.trangThai}}</td>
-
+                            <td>{{thuephong.khachHang.hoVaTenDem}}</td>
+                            <td>{{thuephong.ngayNhanPhong}}</td>
+                            <td>{{thuephong.ngayTraPhong}}</td>
+                            <td>{{thuephong.trangThai}}</td>
+                            <td><a
+                                    href="{% url 'chitietthue_dichvu' thuephong.maThuePhong %}"
+                                    class="btn btn-warning"> <i style="color: white;"
+                                                                class="fas fa-eye"></i>
+                            </a></td>
                         </tr>
                         {% endfor %}
                         </tbody>

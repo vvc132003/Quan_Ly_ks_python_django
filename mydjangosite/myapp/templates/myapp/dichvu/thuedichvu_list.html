@@ -18,7 +18,7 @@
             {% include 'myapp/layout/navbar.html' %}
             <br>
             <div class="container">
-                <h1 class="mt-5 mb-4 text-center">Danh sách Nhân Viên</h1>
+                <h1 class="mt-5 mb-4 text-center">Danh sách đơn thuê dịch vụ</h1>
                 <div class="d-flex justify-content-between">
                     <a href="{% url 'add_dichvu' %}"
                        class="btn btn-primary mb-4 ml-auto"><i class="fas fa-plus"></i>
@@ -37,21 +37,15 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for nhanvien in nhanviens %}
+                        {% for thueDichVu in thueDichVus %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>${thueDichVu.soLuong}</td>
-                            <td>${thueDichVu.dichVu.tenDichVu}</td>
-                            <td>${thueDichVu.dichVu.gia}</td>
-                            <td>${thueDichVu.thanhTien}</td>
+                            <td>{{thueDichVu.soLuong}}</td>
+                            <td>{{thueDichVu.dichVu.tenDichVu}}</td>
+                            <td>{{thueDichVu.dichVu.gia}}</td>
+                            <td>{{thueDichVu.thanhTien}}</td>
                             <td><img class="small-image"
-                                     src="${thueDichVu.dichVu.image}" alt="Ảnh dịch vụ"></td>
-                            <td><a class="btn btn-danger"
-                                   href="{% url 'delete_dichvu' nhanvien.maNhanVien %}"> <i
-                                    class="fas fa-trash-alt"></i>
-                            </a> <a class="btn btn-warning"
-                                    href="{% url 'update_dichvu' nhanvien.maNhanVien %}"><i
-                                    style="color: white;" class="fas fa-edit"></i></a></td>
+                                     src="{{thueDichVu.dichVu.image}}" alt="Ảnh dịch vụ"></td>
                         </tr>
                         {% endfor %}
                         </tbody>

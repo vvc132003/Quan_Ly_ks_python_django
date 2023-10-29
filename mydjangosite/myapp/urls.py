@@ -31,6 +31,7 @@ urlpatterns = [
     path('thuephong_list', views.thuephong_list, name='thuephong_list'),
     path('traphong_list', views.traphong_list, name='traphong_list'),
     path('nhanphong_list', views.nhanphong_list, name='nhanphong_list'),
+    path('chitietthue_dichvu/<int:maThuePhong>/', views.chitietthue_dichvu, name='chitietthue_dichvu'),
 
     path('add_thuephong', views.add_thuephong, name='add_thuephong'),
     path('add_product', views.add_product, name='add_product'),

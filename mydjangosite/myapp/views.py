@@ -13,6 +13,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth import logout
 from django.db.models import Sum
 from django.utils.formats import number_format
+from django.core.mail import send_mail
 
 from datetime import datetime, timedelta  # Import mô-đun datetime và timedelta
 
@@ -177,6 +178,11 @@ def delete_thue_dich_vu(requestdelete, maThueDichVu, maPhong):
             thanhTien = gia * thueDichVu.soLuong
             thueDichVu.thanhTien = thanhTien
             thueDichVu.save()
+            subject = 'Dịch vụ được xoá'
+            message = f'Dịch vụ {thueDichVu.dichVu.tenDichVu} đã được xoá khỏi phòng {maPhong} , chỉ còn lại {thueDichVu.soLuong} .'
+            from_email = 'vvc132003@gmail.com'
+            recipient_list = [thueDichVu.thuePhong.khachHang.email]
+            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
     return redirect(reverse('view_thue_phong', args=[maPhong]))
 
 
@@ -189,6 +195,11 @@ def update_thue_dich_vu(requestupdate, maThueDichVu, maPhong):
         thanhTien = gia * thueDichVu.soLuong
         thueDichVu.thanhTien = thanhTien
         thueDichVu.save()
+        subject = 'Dịch vụ được thêm'
+        message = f'Dịch vụ {thueDichVu.dichVu.tenDichVu} đã được thêm vào thuê phòng {maPhong} , tổng {thueDichVu.soLuong} .'
+        from_email = 'vvc132003@gmail.com'
+        recipient_list = [thueDichVu.thuePhong.khachHang.email]
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
     except ThueDichVu.DoesNotExist:
         pass  # Handle the case where the ThueDichVu does not exist (if needed)
     return redirect(reverse('view_thue_phong', args=[maPhong]))
@@ -213,6 +224,11 @@ def add_thue_dich_vu(request):
         thanhTien = gia * thueDichVu.soLuong
         thueDichVu.thanhTien = thanhTien
         thueDichVu.save()
+        subject = 'Dịch vụ được thêm'
+        message = f'Dịch vụ {dichVu.tenDichVu} đã được thêm vào thuê phòng {maPhong}.'
+        from_email = 'vvc132003@gmail.com'
+        recipient_list = [thuePhong.khachHang.email]
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
     return redirect(reverse('view_thue_phong', args=[maPhong]))
 
 
@@ -434,3 +450,8 @@ def traphong_list(requesto):
 def nhanphong_list(requesto):
     nhanphongs = NhanPhong.objects.all().order_by('-maNhanPhong')
     return render(requesto, 'myapp/don/nhanphong_list.html', {'nhanphongs': nhanphongs})
+
+
+def chitietthue_dichvu(request, maThuePhong):
+    thueDichVus = ThueDichVu.objects.filter(thuePhong_id=maThuePhong)
+    return render(request, 'myapp/dichvu/thuedichvu_list.html', {'thueDichVus': thueDichVus})
