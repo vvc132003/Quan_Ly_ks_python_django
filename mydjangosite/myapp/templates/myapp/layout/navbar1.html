@@ -41,23 +41,47 @@
                     <i class="fas fa-concierge-bell"></i> Dịch vụ
                 </a>
             </li>
+            {% if request.session.full_name %}
             <li class="nav-item">
                 <a class="nav-link" href="#">
-                    <i class="fas fa-users"></i> Khách hàng
+                    <!-- Display user information here when logged in -->
+                    <i class="fas fa-user"></i>{{ full_name }}
                 </a>
+                <ul class="submenu">
+                    <li><a href="{% url 'user_logout' %}">Đăng xuất</a></li>
+                </ul>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-chart-bar"></i> Báo cáo
-                </a>
-            </li>
+            {% else %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'login' %}">
                     <i class="fas fa-user"></i> Đăng nhập
                 </a>
             </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
 </body>
 </html>
+<style>
+    .submenu {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        min-width: 160px;
+        z-index: 1;
+        margin-left:-92px;
+        border: 1px solid #ccc;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    .submenu li {
+        padding: 8px;
+        text-align: center;
+        display: block;
+    }
+
+    li.nav-item:hover .submenu {
+        display: block;
+    }
+</style>

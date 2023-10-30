@@ -44,7 +44,8 @@ def savethuephong(requestk, maPhong):
             soDienThoai=soDienThoai,
             email=email,
             cccd=cccd,
-            diaChi=diaChi
+            diaChi=diaChi,
+            trangThai="đang hoạt động"
         )
         thue_phong = ThuePhong(
             khachHang=khach_hang,
@@ -63,6 +64,11 @@ def savethuephong(requestk, maPhong):
         thue_phong.save()
         nhan_phong.save()
         Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="có khách")
+        subject = 'Thuê phòng'
+        message = f'Bạn đã thuê phòng {maPhong}.'
+        from_email = 'vvc132003@gmail.com'
+        recipient_list = [email]
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
         messages.success(requestk, "Thuê phòng thành công thành công!")
         return redirect('list_rooms')
     return render(requestk, 'myapp/add_thuephong.html', {"maPhong": maPhong})
@@ -77,27 +83,46 @@ def savedatphongphong(requestk, maPhong):
         diaChi = requestk.POST.get('diaChi')
         maNhanVien = requestk.POST.get("maNhanVien")
         tienDatCoc = requestk.POST.get("tienDatCoc")
-        khach_hang = KhachHang.objects.create(
-            hoVaTenDem=hoVaTenDem,
-            soDienThoai=soDienThoai,
-            email=email,
-            cccd=cccd,
-            diaChi=diaChi
-        )
-        thue_phong = ThuePhong(
-            khachHang=khach_hang,
-            phong_id=maPhong,
-            ngayNhanPhong=timezone.now(),
-            ngayTraPhong=timezone.now() + timezone.timedelta(hours=1),
-            trangThai="Đã đặt",
-            tongTien=0,
-            tienDatCoc=tienDatCoc,
-            nhanVien_id=maNhanVien
-        )
-        thue_phong.save()
-        Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="đã đặt")
-        messages.success(requestk, "Đặt phòng thành công thành công!")
-        return redirect('homee')
+        if 'username' in requestk.session:
+            username = requestk.session['username']
+            username = username
+            KhachHang.objects.filter(maKhachHang=username).update(trangThai="đang hoạt động")
+            thue_phong = ThuePhong(
+                khachHang=username,
+                phong_id=maPhong,
+                ngayNhanPhong=timezone.now(),
+                ngayTraPhong=timezone.now() + timezone.timedelta(hours=1),
+                trangThai="Đã đặt",
+                tongTien=0,
+                tienDatCoc=tienDatCoc,
+                nhanVien_id=maNhanVien
+            )
+            thue_phong.save()
+            Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="đã đặt")
+            messages.success(requestk, "Đặt phòng thành công thành công!")
+        else:
+            khach_hang = KhachHang.objects.create(
+                hoVaTenDem=hoVaTenDem,
+                soDienThoai=soDienThoai,
+                email=email,
+                cccd=cccd,
+                diaChi=diaChi,
+                trangThai="đang hoạt động"
+            )
+            thue_phong = ThuePhong(
+                khachHang=khach_hang,
+                phong_id=maPhong,
+                ngayNhanPhong=timezone.now(),
+                ngayTraPhong=timezone.now() + timezone.timedelta(hours=1),
+                trangThai="Đã đặt",
+                tongTien=0,
+                tienDatCoc=tienDatCoc,
+                nhanVien_id=maNhanVien
+            )
+            thue_phong.save()
+            Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="đã đặt")
+            messages.success(requestk, "Đặt phòng thành công thành công!")
+            return redirect('homee')
     return render(requestk, 'myapp/add_thuephong.html', {"maPhong": maPhong})
 
 
@@ -280,30 +305,20 @@ def login(request):
 
 def process_login(request):
     if request.method == 'POST':
-        tai_khoan = request.POST['taiKhoan']
-        mat_khau = request.POST['matKhau']
-        try:
-            nhanvien = NhanVien.objects.filter(taiKhoan=tai_khoan, trangThai="đang hoạt động").first()
-            if nhanvien.matKhau == mat_khau:
-                request.session['username'] = nhanvien.maNhanVien
-                request.session['full_name'] = nhanvien.hoVaTenDem
-                request.session['vaiTro'] = nhanvien.vaiTro
-                return redirect('list_rooms')
-            else:
-                return render(request, 'myapp/rooms/login.html',
-                              {'error_message': 'Tên đăng nhập hoặc mật khẩu không đúng'})
-        except NhanVien.DoesNotExist:
-            try:
-                khachHang = KhachHang.objects.get(taiKhoan=tai_khoan)
-                if khachHang.matKhau == mat_khau:
-                    request.session['username'] = khachHang.maKhachHang
-                    request.session['full_name'] = khachHang.hoVaTenDem
-                    return redirect('homee')
-                else:
-                    return render(request, 'myapp/rooms/login.html',
-                                  {'error_message': 'Tên đăng nhập hoặc mật khẩu không đúng'})
-            except KhachHang.DoesNotExist:
-                return render(request, 'myapp/rooms/login.html', {'error_message': 'Tài khoản không tồn tại'})
+        tai_khoan = request.POST.get('taiKhoan')
+        mat_khau = request.POST.get('matKhau')
+        nhanvien = NhanVien.objects.filter(taiKhoan=tai_khoan, trangThai="đang hoạt động").first()
+        if nhanvien and nhanvien.matKhau == mat_khau:
+            request.session['username'] = nhanvien.maNhanVien
+            request.session['full_name'] = nhanvien.hoVaTenDem
+            request.session['vaiTro'] = nhanvien.vaiTro
+            return redirect('list_rooms')
+        khachHang = KhachHang.objects.filter(taiKhoan=tai_khoan, trangThai="đang hoạt động").first()
+        if khachHang and khachHang.matKhau == mat_khau:
+            request.session['username'] = khachHang.maKhachHang
+            request.session['full_name'] = khachHang.hoVaTenDem
+            return redirect('homee')
+        return render(request, 'myapp/rooms/login.html', {'error_message': 'Tên đăng nhập hoặc mật khẩu không đúng'})
     return render(request, 'myapp/rooms/login.html')
 
 
@@ -340,7 +355,11 @@ def homee(request):
             return render(request, 'myapp/rooms/home.html',
                           {'username': username, 'full_name': full_name, 'rooms': phongs})
         else:
-            return render(request, 'myapp/rooms/login.html')
+            if maPhong:
+                phongs = Phong.objects.filter(maPhong=maPhong)
+            else:
+                phongs = Phong.objects.filter(tinhTrangPhong="còn trống")
+            return render(request, 'myapp/rooms/home.html', {'rooms': phongs})
     return render(request, 'myapp/rooms/search_form.html')
 
 
