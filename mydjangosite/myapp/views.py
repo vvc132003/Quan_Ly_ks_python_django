@@ -2,20 +2,16 @@ from django.shortcuts import render
 from .models import Product
 from django.urls import reverse
 from django.contrib import messages
-from django.contrib.auth.models import User
 from .models import Phong, ThuePhong, KhachHang, DichVu, ThueDichVu, NhanVien, NhanPhong, TraPhong
 from .form import ProductForm, ProductUpdateForm
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.hashers import check_password
 from django.contrib.auth import logout
 from django.db.models import Sum
 from django.utils.formats import number_format
 from django.core.mail import send_mail
-
-from datetime import datetime, timedelta  # Import mô-đun datetime và timedelta
+from datetime import datetime, timedelta
 
 
 # Create your views here.
@@ -83,46 +79,28 @@ def savedatphongphong(requestk, maPhong):
         diaChi = requestk.POST.get('diaChi')
         maNhanVien = requestk.POST.get("maNhanVien")
         tienDatCoc = requestk.POST.get("tienDatCoc")
-        if 'username' in requestk.session:
-            username = requestk.session['username']
-            username = username
-            KhachHang.objects.filter(maKhachHang=username).update(trangThai="đang hoạt động")
-            thue_phong = ThuePhong(
-                khachHang=username,
-                phong_id=maPhong,
-                ngayNhanPhong=timezone.now(),
-                ngayTraPhong=timezone.now() + timezone.timedelta(hours=1),
-                trangThai="Đã đặt",
-                tongTien=0,
-                tienDatCoc=tienDatCoc,
-                nhanVien_id=maNhanVien
-            )
-            thue_phong.save()
-            Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="đã đặt")
-            messages.success(requestk, "Đặt phòng thành công thành công!")
-        else:
-            khach_hang = KhachHang.objects.create(
-                hoVaTenDem=hoVaTenDem,
-                soDienThoai=soDienThoai,
-                email=email,
-                cccd=cccd,
-                diaChi=diaChi,
-                trangThai="đang hoạt động"
-            )
-            thue_phong = ThuePhong(
-                khachHang=khach_hang,
-                phong_id=maPhong,
-                ngayNhanPhong=timezone.now(),
-                ngayTraPhong=timezone.now() + timezone.timedelta(hours=1),
-                trangThai="Đã đặt",
-                tongTien=0,
-                tienDatCoc=tienDatCoc,
-                nhanVien_id=maNhanVien
-            )
-            thue_phong.save()
-            Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="đã đặt")
-            messages.success(requestk, "Đặt phòng thành công thành công!")
-            return redirect('homee')
+        khach_hang = KhachHang.objects.create(
+            hoVaTenDem=hoVaTenDem,
+            soDienThoai=soDienThoai,
+            email=email,
+            cccd=cccd,
+            diaChi=diaChi,
+            trangThai="đang hoạt động"
+        )
+        thue_phong = ThuePhong(
+            khachHang=khach_hang,
+            phong_id=maPhong,
+            ngayNhanPhong=timezone.now(),
+            ngayTraPhong=timezone.now() + timezone.timedelta(hours=1),
+            trangThai="Đã đặt",
+            tongTien=0,
+            tienDatCoc=tienDatCoc,
+            nhanVien_id=maNhanVien
+        )
+        thue_phong.save()
+        Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="đã đặt")
+        messages.success(requestk, "Đặt phòng thành công thành công!")
+        return redirect('homee')
     return render(requestk, 'myapp/add_thuephong.html', {"maPhong": maPhong})
 
 
