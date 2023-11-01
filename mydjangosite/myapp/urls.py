@@ -42,7 +42,7 @@ urlpatterns = [
     path('delete_product/<int:product_id>/', views.delete_product, name='delete_product'),
     path('update_product/<int:product_id>/', views.update_product, name='update_product'),
     path('add_thuephong/<int:maPhong>/', views.add_thuephong, name='add_thuephong'),
-    path('savethuephong/<int:maPhong>/', views.savethuephong, name='savethuephong'),
+    path('savethuephong', views.savethuephong, name='savethuephong'),
     path('savedatphongphong/<int:maPhong>/', views.savedatphongphong, name='savedatphongphong'),
     path('view_thue_phong/<int:maPhong>/', views.view_thue_phong, name='view_thue_phong'),
     path('delete_thue_dich_vu/<int:maThueDichVu>/<int:maPhong>/', views.delete_thue_dich_vu,

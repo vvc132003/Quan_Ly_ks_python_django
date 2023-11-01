@@ -1,6 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.contrib.auth.hashers import make_password, check_password
 
 
 class Product(models.Model):
@@ -9,24 +7,29 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
 
+class Tang(models.Model):
+    maTang = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+
+
 class Phong(models.Model):
     maPhong = models.AutoField(primary_key=True)
     soPhong = models.CharField(max_length=255)
     loaiPhong = models.CharField(max_length=255)
     tinhTrangPhong = models.CharField(max_length=255)
     giaTien = models.DecimalField(max_digits=10, decimal_places=2)
-
+    tang = models.ForeignKey(Tang, on_delete=models.CASCADE, related_name='phongs')
 
 
 class NhanVien(models.Model):
     maNhanVien = models.AutoField(primary_key=True)
     hoVaTenDem = models.CharField(max_length=255)
     luong = models.DecimalField(max_digits=10, decimal_places=2)
-    taiKhoan = models.CharField(max_length=255)
+    taiKhoan = models.CharField(max_length=255, unique=True)
     matKhau = models.CharField(max_length=255)
     image = models.CharField(max_length=255)
-    vaiTro = models.CharField(max_length=255)
-    trangThai = models.CharField(max_length=255)
+    chucVu = models.CharField(max_length=255)
+    trangThai = models.CharField(max_length=255, null=True, blank=True)
 
     def check_password(self, raw_password):
         # Thực hiện kiểm tra mật khẩu ở đây, ví dụ:
@@ -42,7 +45,7 @@ class KhachHang(models.Model):
     diaChi = models.TextField()
     taiKhoan = models.CharField(max_length=255)
     matKhau = models.CharField(max_length=255)
-    trangThai = models.CharField(max_length=255)
+    trangThai = models.CharField(max_length=255, null=True, blank=True)
 
     def check_password(self, raw_password):
         # Thực hiện kiểm tra mật khẩu ở đây, ví dụ:
@@ -59,6 +62,8 @@ class ThuePhong(models.Model):
     trangThai = models.CharField(max_length=255)
     tienDatCoc = models.DecimalField(max_digits=10, decimal_places=2)
     nhanVien = models.ForeignKey(NhanVien, on_delete=models.SET_NULL, null=True)
+    hinhThucThanhToan = models.CharField(max_length=255, null=True, blank=True)
+    trangThaiThanhToan = models.CharField(max_length=255, null=True, blank=True)
 
 
 class DichVu(models.Model):
@@ -66,8 +71,8 @@ class DichVu(models.Model):
     tenDichVu = models.CharField(max_length=255)
     moTa = models.TextField()
     gia = models.DecimalField(max_digits=10, decimal_places=2)
-    trangThai = models.CharField(max_length=255)
-    image = models.TextField()
+    trangThai = models.CharField(max_length=255, blank=True, null=True)
+    image = models.CharField(max_length=255, default='')
 
 
 class ThueDichVu(models.Model):

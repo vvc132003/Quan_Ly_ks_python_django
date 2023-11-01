@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Product
 from django.urls import reverse
 from django.contrib import messages
-from .models import Phong, ThuePhong, KhachHang, DichVu, ThueDichVu, NhanVien, NhanPhong, TraPhong
+from .models import Phong, ThuePhong, KhachHang, DichVu, ThueDichVu, NhanVien, NhanPhong, TraPhong, Tang
 from .form import ProductForm, ProductUpdateForm
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -17,17 +17,20 @@ from datetime import datetime, timedelta
 # Create your views here.
 
 def add_thuephong(request, maPhong):
+    phongs = Phong.objects.filter(maPhong=maPhong).first()
     if 'username' in request.session and 'full_name' in request.session:
         username = request.session['username']
         full_name = request.session['full_name']
         return render(request, 'myapp/add/add_thuephong.html',
-                      {'maPhong': maPhong, 'username': username, 'full_name': full_name})
+                      {'phongs': phongs, 'username': username,
+                       'full_name': full_name})
     else:
         return redirect('login')
 
 
-def savethuephong(requestk, maPhong):
+def savethuephong(requestk):
     if requestk.method == 'POST':
+        maPhong = requestk.POST.get('maPhong')
         hoVaTenDem = requestk.POST.get('hoVaTenDem')
         soDienThoai = requestk.POST.get('soDienThoai')
         email = requestk.POST.get('email')
@@ -35,6 +38,8 @@ def savethuephong(requestk, maPhong):
         diaChi = requestk.POST.get('diaChi')
         maNhanVien = requestk.POST.get("maNhanVien")
         tienDatCoc = requestk.POST.get("tienDatCoc")
+        ngayNhanPhong = requestk.POST.get("ngayNhanPhong")
+        ngayTraPhong = requestk.POST.get("ngayTraPhong")
         khach_hang = KhachHang.objects.create(
             hoVaTenDem=hoVaTenDem,
             soDienThoai=soDienThoai,
@@ -43,19 +48,21 @@ def savethuephong(requestk, maPhong):
             diaChi=diaChi,
             trangThai="đang hoạt động"
         )
+        phong = Phong.objects.get(maPhong=maPhong)
         thue_phong = ThuePhong(
             khachHang=khach_hang,
-            phong_id=maPhong,
-            ngayNhanPhong=timezone.now(),
-            ngayTraPhong=timezone.now() + timezone.timedelta(hours=1),
+            phong=phong,
+            ngayNhanPhong=ngayNhanPhong,
+            ngayTraPhong=ngayTraPhong,
             trangThai="Đang thuê",
             tongTien=0,
             tienDatCoc=tienDatCoc,
-            nhanVien_id=maNhanVien
+            nhanVien_id=maNhanVien,
+            trangThaiThanhToan="chưa thanh toán"
         )
         nhan_phong = NhanPhong(
             thuePhong=thue_phong,
-            ngayNhanPhong=timezone.now(),
+            ngayNhanPhong=ngayNhanPhong,
         )
         thue_phong.save()
         nhan_phong.save()
@@ -95,7 +102,8 @@ def savedatphongphong(requestk, maPhong):
             trangThai="Đã đặt",
             tongTien=0,
             tienDatCoc=tienDatCoc,
-            nhanVien_id=maNhanVien
+            nhanVien_id=maNhanVien,
+            trangThaiThanhToan="chưa thanh toán"
         )
         thue_phong.save()
         Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="đã đặt")
@@ -113,12 +121,16 @@ def add_traphong(request):
         gia_tien = request.POST.get("giaTien")
         tien_dat_coc = request.POST.get("tienDatCoc")
         maKhachHang = request.POST.get("maKhachHang")
+        hinhThucThanhToan = request.POST.get("hinhThucThanhToan")
         tong_tien_khach_hang = float(tong_tien) + float(gia_tien) - float(tien_dat_coc)
         tra_phong = TraPhong(thuePhong=ThuePhong.objects.get(maThuePhong=ma_thue_phong),
                              nhanVien=NhanVien.objects.get(maNhanVien=ma_nhan_vien), tongTien=tong_tien_khach_hang,
                              ngayTraPhong=datetime.now())
         tra_phong.save()
-        ThuePhong.objects.filter(maThuePhong=ma_thue_phong).update(tongTien=tong_tien, trangThai="Đã trả")
+        ThuePhong.objects.filter(maThuePhong=ma_thue_phong).update(tongTien=tong_tien, trangThai="Đã trả",
+                                                                   trangThaiThanhToan="đã thanh toán",
+                                                                   hinhThucThanhToan=hinhThucThanhToan
+                                                                   )
         # Tạo logic cập nhật roomService.updatesuachua(maPhong) ở đây
         Phong.objects.filter(maPhong=ma_phong).update(tinhTrangPhong="chưa dọn")
         KhachHang.objects.filter(maKhachHang=maKhachHang).update(trangThai="hết hoạt động")
@@ -289,7 +301,7 @@ def process_login(request):
         if nhanvien and nhanvien.matKhau == mat_khau:
             request.session['username'] = nhanvien.maNhanVien
             request.session['full_name'] = nhanvien.hoVaTenDem
-            request.session['vaiTro'] = nhanvien.vaiTro
+            request.session['chucVu'] = nhanvien.chucVu
             return redirect('list_rooms')
         khachHang = KhachHang.objects.filter(taiKhoan=tai_khoan, trangThai="đang hoạt động").first()
         if khachHang and khachHang.matKhau == mat_khau:
@@ -305,18 +317,37 @@ def user_logout(request):
     return redirect('login')  # You
 
 
+# def list_rooms(request):
+#     phongs = Phong.objects.all()
+#     if 'username' in request.session and 'full_name' in request.session:
+#         username = request.session['username']
+#         full_name = request.session['full_name']
+#         role = request.session.get('chucVu', None)
+#         if role == "Quản Lý":
+#             return render(request, 'myapp/rooms/list_rooms.html',
+#                           {'username': username, 'full_name': full_name, 'rooms': phongs})
+#         elif role == "Nhân Viên":
+#             return render(request, 'myapp/rooms/list_rooms.html',
+#                           {'username': username, 'full_name': full_name, 'rooms': phongs})
+#     return render(request, 'myapp/rooms/login.html')
+
+
 def list_rooms(request):
-    phongs = Phong.objects.all()
+    tangs = Tang.objects.all()
+    rooms_by_floor = {}
+    for tang in tangs:
+        rooms = Phong.objects.filter(tang=tang)
+        rooms_by_floor[tang] = rooms
     if 'username' in request.session and 'full_name' in request.session:
         username = request.session['username']
         full_name = request.session['full_name']
-        role = request.session.get('vaiTro', None)
+        role = request.session.get('chucVu', None)
         if role == "Quản Lý":
             return render(request, 'myapp/rooms/list_rooms.html',
-                          {'username': username, 'full_name': full_name, 'rooms': phongs})
+                          {'username': username, 'full_name': full_name, 'rooms_by_floor': rooms_by_floor})
         elif role == "Nhân Viên":
             return render(request, 'myapp/rooms/list_rooms.html',
-                          {'username': username, 'full_name': full_name, 'rooms': phongs})
+                          {'username': username, 'full_name': full_name, 'rooms_by_floor': rooms_by_floor})
     return render(request, 'myapp/rooms/login.html')
 
 

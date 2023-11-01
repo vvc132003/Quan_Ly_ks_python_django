@@ -79,7 +79,7 @@
                     <hr>
                     <div class="text-bg-primary p-2">Thanh toán</div>
                     <div class="payment-section bg-body-secondary">
-                        <div class="payment-details">
+                        <div class="payment-details ">
                             <form action="{% url 'add_traphong' %}" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="tongTien" id="tongTien" value="{{ totalCost }}"/>
@@ -87,6 +87,12 @@
                                 <p>Tổng Tiền Phòng: {{ gia_tien_phong }} VNĐ</p>
                                 <p>Tiền đặt cọc: {{ tien_dat_coc }} VNĐ</p>
                                 <p>Tổng Thanh Toán cho Thuê Phòng: {{ totalPayment }}</p>
+                                <label for="chuyenKhoan">Chuyển Khoản</label>
+                                <input type="radio" id="chuyenKhoan" name="hinhThucThanhToan" value="chuyển khoản">
+                                <label for="tienMat">Tiền Mặt</label>
+                                <input type="radio" id="tienMat" name="hinhThucThanhToan" value="tiền mặt">
+                                <br>
+                                <br>
                                 <input type="hidden" name="tienDatCoc" value="{{ thue_phong.tienDatCoc }}"/>
                                 <input type="hidden" name="maNhanVien"
                                        value="{{ thue_phong.nhanVien.maNhanVien }}"/>

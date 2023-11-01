@@ -7,18 +7,21 @@
 <div class="midde_cont">
     <div style="padding: 0px 15px;">
         <div class="row">
-            <div class="col-5">
-                <h2 style="color: black; padding: 20px 30px;">QUẢN LÝ PHÒNG</h2>
-            </div>
-            <div class="col-7">
-                <form style="padding: 20px 34px; text-align: right;" action="listroom" method="GET">
-                    <label for="maPhong">Tìm kiếm phòng:</label>
-                    <input type="text" placeholder="Nhập số phòng..." id="maPhong" name="maPhong">
-                    <input type="submit" value="Search">
-                </form>
-            </div>
+            <!--            <div class="col-5">-->
+            <!--                <h2 style="color: black; padding: 20px 30px;">QUẢN LÝ PHÒNG</h2>-->
+            <!--            </div>-->
+            <!--            <div class="col-7">-->
+            <!--                <form style="padding: 20px 34px; text-align: right;" action="listroom" method="GET">-->
+            <!--                    <label for="maPhong">Tìm kiếm phòng:</label>-->
+            <!--                    <input type="text" placeholder="Nhập số phòng..." id="maPhong" name="maPhong">-->
+            <!--                    <input type="submit" value="Search">-->
+            <!--                </form>-->
+            <!--            </div>-->
         </div>
         <div class="text">
+            {% for tang, rooms in rooms_by_floor.items %}
+            <br>
+            <p class="tang">{{ tang.name }}</p>
             <div class="room-container">
                 {% for room in rooms %}
                 <div id="table-{{ forloop.counter0 }}" class="room-box {% if room.tinhTrangPhong == 'có khách' %}cokhach
@@ -29,7 +32,7 @@
                 {% else %}other{% endif %}">
                     <p>Số phòng: {{ room.maPhong }}</p>
                     <p>Loại phòng: {{ room.loaiPhong }}</p>
-<!--                    <p>Giá: {{ room.giaTien }}</p>-->
+                    <!--                    <p>Giá: {{ room.giaTien }}</p>-->
                     {% if room.tinhTrangPhong == 'có khách' %}
                     <i class="fas fa-bed" style="color: white;"></i>
                     {% elif room.tinhTrangPhong == 'còn trống' %}
@@ -84,6 +87,7 @@
                 <div class="student-info" id="student-info-{{ room.maPhong }}"></div>
                 {% endfor %}
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -158,5 +162,20 @@
 
     .modal-content p {
         color: #000;
+    }
+    .room-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 5px;
+    }
+    .tang {
+       color: while;
+       display: flex;
+       font-size:20px;
+       width: 90px;
+       padding: 10px 10px;
+       border-radius: 0px;
+       background: red;
     }
 </style>

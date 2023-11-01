@@ -27,8 +27,10 @@
     <div class="sidebar_blog_2">
         <h4>Trang chủ</h4>
         <ul class="list-unstyled components">
+            <li><a href="{% url 'list_rooms' %}"><i class="fas fa-layer-group orange_color"></i> <span>Tầng</span></a>
+            </li>
             <li><a href="{% url 'list_rooms' %}"><i class="fas fa-bed orange_color"></i> <span>Phòng</span></a></li>
-            {% if request.session.vaiTro == "Quản Lý" %} {# Check if the user's role is "quản lý" #}
+            {% if request.session.chucVu == "Quản Lý" %} {# Check if the user's role is "quản lý" #}
             <li><a href="{% url 'nhanvien_list' %}"><i class="fas fa-user orange_color"></i> <span>Nhân Viên</span></a>
             </li>
             <li><a href="{% url 'khachhang_list' %}"><i class="fas fa-user-tie red_color"></i>

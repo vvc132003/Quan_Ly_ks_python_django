@@ -16,48 +16,106 @@
         <div id="content">
             {% include 'myapp/layout/navbar.html' %}
             <br>
-            <div class="container w-50">
-                <h1 class="mt-5 mb-4 text-center">Thuê Phòng</h1>
-                <form method="post" action="{% url 'savethuephong' maPhong=maPhong %}">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <input type="hidden" name="maPhong" value="{{ maPhong }}" class="form-controll"
-                               required="required"/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="hoVaTenDem" class="form-label">Tên khách hàng</label>
-                        <input type="text" name="hoVaTenDem" id="hoVaTenDem" class="form-controll"/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="soDienThoai" class="form-label">Số điện thoại:</label>
-                        <input type="text" name="soDienThoai" id="soDienThoai"
-                               class="form-controll"/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="diaChi" class="form-label">Địa chỉ:</label>
-                        <input type="text" name="diaChi" id="diaChi" class="form-controll"/>
+            <div class="add_thuephong">
+                <div class="container ">
+                    <h1 class="mt-5 mb-4 text-center">Nhập thông tin thuê phòng</h1>
+                    <br>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="text-bg-secondary p-2">Thông tin phòng</div>
+                            <div class="border border-secondary-subtle" style="padding:10px 20px">
+                                <div class="mb-3 ">
+                                    <label for="maPhong" class="form-label">Phòng:</label>
+                                    <input type="text" name="maPhong" value="{{ phongs.maPhong }}" class="form-controll"
+                                           required
+                                           readonly/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="loaiPhong" class="form-label">Loại phòng:</label>
+                                    <input type="text" name="loaiPhong" value="{{ phongs.loaiPhong }}"
+                                           class="form-controll"
+                                           required
+                                           readonly/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="hoVaTenDem" class="form-label">Gía phòng:</label>
+                                    <input type="text" name="giaTien" value="{{ phongs.giaTien }}" class="form-controll"
+                                           required
+                                           readonly/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <div class="text-bg-success p-2">Thông tin đăng ký</div>
+                            <div class="border border-secondary-subtle" style="padding:10px 20px">
+                                <form method="post" action="{% url 'savethuephong' %}">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <input type="hidden" name="maPhong" value="{{ phongs.maPhong }}"
+                                               class="form-controll"
+                                               required="required"/>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label for="hoVaTenDem" class="form-label">Tên khách hàng:</label>
+                                                <input type="text" name="hoVaTenDem" id="hoVaTenDem"
+                                                       class="form-controll"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="soDienThoai" class="form-label">Số điện thoại:</label>
+                                                <input type="text" name="soDienThoai" id="soDienThoai"
+                                                       class="form-controll"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="diaChi" class="form-label">Địa chỉ:</label>
+                                                <input type="text" name="diaChi" id="diaChi" class="form-controll"/>
 
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email:</label>
-                        <input type="email" name="email" id="email" class="form-controll"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Email:</label>
+                                                <input type="email" placeholder="example@example.com" name="email"
+                                                       id="email" class="form-controll"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label for="cccd" class="form-label">CCCD:</label>
+                                                <input type="text" name="cccd" id="cccd" class="form-controll"/>
 
-                    </div>
-                    <div class="mb-3">
-                        <label for="cccd" class="form-label">CCCD:</label>
-                        <input type="text" name="cccd" id="cccd" class="form-controll"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="ngayNhanPhong" class="form-label">Ngày nhận phòng:</label>
+                                                <input type="date" name="ngayNhanPhong" id="ngayNhanPhong"
+                                                       class="form-controll"/>
 
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="ngayTraPhong" class="form-label">Ngày dự kiến trả
+                                                    phòng:</label>
+                                                <input type="date" name="ngayTraPhong" id="ngayTraPhong"
+                                                       class="form-controll"/>
+
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="tienDatCoc">Đặt cọc trước:</label>
+                                                <input type="number" name="tienDatCoc" id="tienDatCoc"
+                                                       class="form-controll"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <input type="hidden" name="maNhanVien" value="{{ username }}"
+                                                       id="maNhanVien"
+                                                       class="form-controll" required="required"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="submit" value="Thuê phòng" class="btn btn-primary"/>
+                                </form>
+                            </div>
+                            <br>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="tienDatCoc">Tiền đặt cọc:</label>
-                        <input type="text" name="tienDatCoc" id="tienDatCoc" class="form-controll"/>
-                    </div>
-                    <div class="mb-3">
-                        <input type="hidden" name="maNhanVien" value="{{ username }}" id="maNhanVien"
-                               class="form-controll" required="required"/>
-                    </div>
-                    <input type="submit" value="Thuê phòng" class="btn btn-primary"/>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -80,6 +138,10 @@
      border-radius: var(--bs-border-radius);
      transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
      }
+    .add_thuephong{
+        background-color: #f8f8f8; /* Màu nền */
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2 );
+    }
 </style>
 </body>
 {% include 'myapp/file/js.html' %}
