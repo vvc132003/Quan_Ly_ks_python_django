@@ -17,31 +17,59 @@
         <div id="content">
             {% include 'myapp/layout/navbar.html' %}
             <br>
-            <div class="container w-50">
-                <h1 class="mt-5 mb-4 text-center">Nhận Phòng</h1>
-                {% for thuePhong in thuePhongList %}
-                <form action="{% url 'addnhanphong' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="maThuePhong" value="{{ thuePhong.maThuePhong }}">
-                    <div class="form-group">
-                        <input type="hidden" id="maPhong" name="maPhong" value="{{ thuePhong.phong.maPhong }}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="customerId">Tên Khách hàng:</label>
-                        <input type="text" id="hoVaTenDem" name="hoVaTenDem"
-                               value="{{ thuePhong.khachHang.hoVaTenDem }}" readonly>
-                        <input type="hidden" id="maKhachHang" name="maKhachHang" value="{{ thuePhong.khachHang.maKhachHang }}"
-                               readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="cccd">CCCD:</label>
-                        <input type="text" id="cccd" name="cccd" value="">
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Nhận phòng" class="btn-primary">
-                    </div>
-                </form>
-                {% endfor %}
+            <br>
+            <br>
+            <br>
+            <div class="add_thuephong">
+                <div class="container w-50">
+                    <br>
+                    <h1 class="mt-5 mb-4 text-center">Nhận Phòng</h1>
+                    {% for thuePhong in thuePhongList %}
+                    <form action="{% url 'addnhanphong' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="maThuePhong" value="{{ thuePhong.maThuePhong }}">
+                        <div class="form-group">
+                            <input type="hidden" id="maPhong" name="maPhong" value="{{ thuePhong.phong.maPhong }}"
+                                   readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cccd"
+                                   class="form-label">Tên khách hàng:</label>
+                            <input type="text" id="hoVaTenDem" name="hoVaTenDem" class="form-controll"
+                                   value="{{ thuePhong.khachHang.hoVaTenDem }}"
+                                   readonly>
+                            <input type="hidden" id="maKhachHang" name="maKhachHang"
+                                   value="{{ thuePhong.khachHang.maKhachHang }}"
+                                   readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cccd"
+                                   class="form-label">CCCD:</label>
+                            <input type="text" name="cccd" id="cccd"
+                                   class="form-controll"/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ngayNhanPhong"
+                                   class="form-label">Ngày nhận
+                                phòng:</label>
+                            <input type="date" name="ngayNhanPhong"
+                                   id="ngayNhanPhong"
+                                   class="form-controll"/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ngayTraPhong" class="form-label">Ngày dự kiến trả
+                                phòng:</label>
+                            <input type="date" name="ngayTraPhong" id="ngayTraPhong"
+                                   class="form-controll"/>
+
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Nhận phòng" class="btn-primary">
+                        </div>
+                        <br>
+                    </form>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
@@ -89,77 +117,26 @@
 {% endif %}
 </body>
 <style>
-/* Áp dụng CSS cho form */
-form {
-	max-width: 400px;
-	margin: 0 auto;
-}
-
-.form-group {
-	margin-bottom: 20px;
-}
-
-label {
-	font-weight: bold;
-}
-
-input[type="text"], input[type="hidden"] {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-}
-
-input[type="submit"] {
-	background-color: #007BFF;
-	color: #fff;
-	border: none;
-	padding: 10px 20px;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-input[type="submit"]:hover {
-	background-color: #0056b3;
-}
-
-.modal.fade.show {
-	display: flex !important;
-	align-items: center;
-	justify-content: center;
-	background: rgba(0, 0, 0, 0.5);
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 9999;
-	transition: opacity 0.3s ease;
-}
-
-.modal-content {
-	background-color: #fff;
-	padding: 30px;
-	border-radius: 10px;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-	text-align: center;
-	max-width: 1000px;
-	width: 100%;
-	text-align: center;
-}
-
-.modal-content p {
-	font-size: 20px;
-	font-weight: bold;
-}
-
-#paymentSuccessMessage {
-	color: green;
-}
-
-#thuephongSuccessMessage {
-	color: green;
-}
+    .container .form-controll{
+         display: block;
+     width: 100%;
+     padding: 0.375rem 0.75rem;
+     font-size: 1rem;
+     font-weight: 400;
+     line-height: 1.5;
+     color: var(--bs-body-color);
+     background-color: var(--bs-body-bg);
+     background-clip: padding-box;
+     border: var(--bs-border-width) solid var(--bs-border-color);
+     -webkit-appearance: none;
+     -moz-appearance: none;
+     appearance: none;
+     border-radius: var(--bs-border-radius);
+     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+     }
+     .add_thuephong{
+        background-color: #f8f8f8; /* Màu nền */
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2 );
+    }
 </style>
-
 </html>

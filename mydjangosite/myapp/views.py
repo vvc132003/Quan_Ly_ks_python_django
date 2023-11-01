@@ -12,9 +12,32 @@ from django.db.models import Sum
 from django.utils.formats import number_format
 from django.core.mail import send_mail
 from datetime import datetime, timedelta
+from django.http import JsonResponse
+from django.db.models import Count, Sum
+from django.db.models.functions import ExtractMonth
+from django.http import JsonResponse
 
 
 # Create your views here.
+
+
+def revenue_chart(request):
+    thong_ke = ThuePhong.objects.annotate(month=ExtractMonth('ngayNhanPhong')) \
+        .values('month') \
+        .annotate(so_lan_thue=Count('maThuePhong'), doanh_thu=Sum('tongTien')) \
+        .order_by('month')
+
+    thang = [entry['month'] for entry in thong_ke]
+    so_lan_thue = [entry['so_lan_thue'] for entry in thong_ke]
+    doanh_thu = [entry['doanh_thu'] for entry in thong_ke]
+
+    data = {
+        'thang': thang,
+        'so_lan_thue': so_lan_thue,
+        'doanh_thu': [str(entry) for entry in doanh_thu],  # Chuyển Decimals thành chuỗi
+    }
+    return render(request, 'myapp/dichvu/revenue_chart.html', {'data': data})
+
 
 def add_thuephong(request, maPhong):
     phongs = Phong.objects.filter(maPhong=maPhong).first()
@@ -77,8 +100,9 @@ def savethuephong(requestk):
     return render(requestk, 'myapp/add_thuephong.html', {"maPhong": maPhong})
 
 
-def savedatphongphong(requestk, maPhong):
+def savedatphongphong(requestk):
     if requestk.method == 'POST':
+        maPhong = requestk.POST.get('maPhong')
         hoVaTenDem = requestk.POST.get('hoVaTenDem')
         soDienThoai = requestk.POST.get('soDienThoai')
         email = requestk.POST.get('email')
@@ -86,6 +110,8 @@ def savedatphongphong(requestk, maPhong):
         diaChi = requestk.POST.get('diaChi')
         maNhanVien = requestk.POST.get("maNhanVien")
         tienDatCoc = requestk.POST.get("tienDatCoc")
+        ngayNhanPhong = requestk.POST.get("ngayNhanPhong")
+        ngayTraPhong = requestk.POST.get("ngayTraPhong")
         khach_hang = KhachHang.objects.create(
             hoVaTenDem=hoVaTenDem,
             soDienThoai=soDienThoai,
@@ -94,11 +120,12 @@ def savedatphongphong(requestk, maPhong):
             diaChi=diaChi,
             trangThai="đang hoạt động"
         )
+        phong = Phong.objects.get(maPhong=maPhong)
         thue_phong = ThuePhong(
             khachHang=khach_hang,
-            phong_id=maPhong,
-            ngayNhanPhong=timezone.now(),
-            ngayTraPhong=timezone.now() + timezone.timedelta(hours=1),
+            phong=phong,
+            ngayNhanPhong=ngayNhanPhong,
+            ngayTraPhong=ngayTraPhong,
             trangThai="Đã đặt",
             tongTien=0,
             tienDatCoc=tienDatCoc,
@@ -109,7 +136,7 @@ def savedatphongphong(requestk, maPhong):
         Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="đã đặt")
         messages.success(requestk, "Đặt phòng thành công thành công!")
         return redirect('homee')
-    return render(requestk, 'myapp/add_thuephong.html', {"maPhong": maPhong})
+    return render(requestk, 'myapp/add_thuephong.html', {})
 
 
 def add_traphong(request):
@@ -147,7 +174,6 @@ def view_thue_phong(request, maPhong):
     thue_dich_vus = ThueDichVu.objects.filter(thuePhong=thue_phong)
     # Tính tổng tiền từ các dịch vụ
     total_cost = thue_dich_vus.aggregate(total=Sum('thanhTien'))['total'] or 0
-    # total_cost_vnd = number_format(total_cost, force_grouping=True)
     # Tổng tiền của thuê phòng và dịch vụ
     total_payment = thue_phong.phong.giaTien + total_cost - thue_phong.tienDatCoc
     total_payment_vnd = number_format(total_payment, force_grouping=True)
@@ -381,6 +407,8 @@ def nhan_phong(request, maPhong):
 def addnhanphong(request):
     if request.method == 'POST':
         maPhong = request.POST.get('maPhong')
+        ngayNhanPhong = request.POST.get('ngayNhanPhong')
+        ngayTraPhong = request.POST.get('ngayTraPhong')
         maThuePhong = request.POST.get('maThuePhong')
         cccd = request.POST.get('cccd')
         khachHang = KhachHang.objects.filter(cccd=cccd, trangThai="đang hoạt động").first()
@@ -388,11 +416,11 @@ def addnhanphong(request):
             thuePhong = ThuePhong.objects.get(maThuePhong=maThuePhong)
             nhan_phong = NhanPhong(
                 thuePhong=thuePhong,
-                ngayNhanPhong=timezone.now(),
+                ngayNhanPhong=ngayNhanPhong,
             )
             nhan_phong.save()
             Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="có khách")
-            ThuePhong.objects.filter(maThuePhong=maThuePhong).update(trangThai="Đang thuê")
+            ThuePhong.objects.filter(maThuePhong=maThuePhong).update(trangThai="Đang thuê", ngayTraPhong=ngayTraPhong)
             messages.success(request, 'Nhận phòng thành công!')
             return redirect('list_rooms')
         else:
