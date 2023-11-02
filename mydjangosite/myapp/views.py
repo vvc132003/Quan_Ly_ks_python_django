@@ -1,3 +1,5 @@
+from _ast import arg
+
 from django.shortcuts import render
 from .models import Product
 from django.urls import reverse
@@ -149,6 +151,27 @@ def savedatphongphong(requestk):
     return render(requestk, 'myapp/add_thuephong.html', {})
 
 
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import io
+
+
+def inhoadon(request, ma_thue_phong):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="invoice_{ma_thue_phong}.pdf"'
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    p.drawString(100, 750, "Invoice")
+    p.drawString(100, 730, f"Thue Phong: {ma_thue_phong}")
+    p.showPage()
+    p.save()
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response
+
+
 def add_traphong(request):
     if request.method == "POST":
         ma_thue_phong = request.POST.get("maThuePhong")
@@ -168,11 +191,10 @@ def add_traphong(request):
                                                                    trangThaiThanhToan="đã thanh toán",
                                                                    hinhThucThanhToan=hinhThucThanhToan
                                                                    )
-        # Tạo logic cập nhật roomService.updatesuachua(maPhong) ở đây
         Phong.objects.filter(maPhong=ma_phong).update(tinhTrangPhong="chưa dọn")
         KhachHang.objects.filter(maKhachHang=maKhachHang).update(trangThai="hết hoạt động")
-        messages.warning(request, "Thanh toán thành công!")
-        return redirect("list_rooms")
+        inhoadon_response = inhoadon(request, ma_thue_phong)
+        return inhoadon_response or redirect('list_rooms')
     else:
         return render(request, 'error_page.html', {'error_message': 'Invalid Request'})
 
