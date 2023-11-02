@@ -27,14 +27,24 @@ def revenue_chart(request):
         .annotate(so_lan_thue=Count('maThuePhong'), doanh_thu=Sum('tongTien')) \
         .order_by('month')
 
+    thong_ke_dich_vu = ThueDichVu.objects.values('dichVu') \
+        .annotate(so_luong_dich_vu=Count('dichVu'), doanh_thu_dich_vu=Sum('thanhTien')) \
+        .order_by('dichVu')
+
     thang = [entry['month'] for entry in thong_ke]
     so_lan_thue = [entry['so_lan_thue'] for entry in thong_ke]
     doanh_thu = [entry['doanh_thu'] for entry in thong_ke]
+    dichVu = [entry['dichVu'] for entry in thong_ke_dich_vu]
+    so_luong_dich_vu = [entry['so_luong_dich_vu'] for entry in thong_ke_dich_vu]
+    doanh_thu_dich_vu = [entry['doanh_thu_dich_vu'] for entry in thong_ke_dich_vu]
 
     data = {
         'thang': thang,
         'so_lan_thue': so_lan_thue,
         'doanh_thu': [str(entry) for entry in doanh_thu],  # Chuyển Decimals thành chuỗi
+        'dichVu': dichVu,
+        'so_luong_dich_vu': so_luong_dich_vu,
+        'doanh_thu_dich_vu': [str(entry) for entry in doanh_thu_dich_vu],
     }
     return render(request, 'myapp/dichvu/revenue_chart.html', {'data': data})
 

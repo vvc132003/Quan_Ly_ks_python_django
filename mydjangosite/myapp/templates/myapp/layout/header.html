@@ -50,7 +50,8 @@
                     </li>
                 </ul>
             </li>
-            <li><a href=""><i class="fa fa-bar-chart-o green_color"></i> <span>Thống kê</span></a></li>
+            <li><a href="{% url 'revenue_chart' %}"><i class="fa fa-bar-chart-o green_color"></i> <span>Thống kê</span></a>
+            </li>
             {% endif %}
             <li><a href="{% url 'user_logout' %}"><i class="fas fa-sign-out-alt yellow_color"></i>
                 <span>Đăng Xuất</span></a></li>
