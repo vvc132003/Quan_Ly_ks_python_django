@@ -74,7 +74,9 @@ def savethuephong(requestk):
         maNhanVien = requestk.POST.get("maNhanVien")
         tienDatCoc = requestk.POST.get("tienDatCoc")
         ngayNhanPhong = requestk.POST.get("ngayNhanPhong")
+        gioNhanPhong = requestk.POST.get("gioNhanPhong")
         ngayTraPhong = requestk.POST.get("ngayTraPhong")
+        gioTraPhong = requestk.POST.get("gioTraPhong")
         khach_hang = KhachHang.objects.create(
             hoVaTenDem=hoVaTenDem,
             soDienThoai=soDienThoai,
@@ -89,6 +91,8 @@ def savethuephong(requestk):
             phong=phong,
             ngayNhanPhong=ngayNhanPhong,
             ngayTraPhong=ngayTraPhong,
+            gioNhanPhong=gioNhanPhong,
+            gioTraPhong=gioTraPhong,
             trangThai="Đang thuê",
             tongTien=0,
             tienDatCoc=tienDatCoc,
@@ -98,6 +102,7 @@ def savethuephong(requestk):
         nhan_phong = NhanPhong(
             thuePhong=thue_phong,
             ngayNhanPhong=ngayNhanPhong,
+            gioNhanPhong=gioNhanPhong,
         )
         thue_phong.save()
         nhan_phong.save()
