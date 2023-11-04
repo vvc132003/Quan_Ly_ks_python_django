@@ -187,10 +187,11 @@ def add_traphong(request):
         tien_dat_coc = request.POST.get("tienDatCoc")
         maKhachHang = request.POST.get("maKhachHang")
         hinhThucThanhToan = request.POST.get("hinhThucThanhToan")
+
         tong_tien_khach_hang = float(tong_tien) + float(gia_tien) - float(tien_dat_coc)
         tra_phong = TraPhong(thuePhong=ThuePhong.objects.get(maThuePhong=ma_thue_phong),
                              nhanVien=NhanVien.objects.get(maNhanVien=ma_nhan_vien), tongTien=tong_tien_khach_hang,
-                             ngayTraPhong=datetime.now())
+                             ngayTraPhong=datetime.now(), gioTraPhong=datetime.now().time())
         tra_phong.save()
         ThuePhong.objects.filter(maThuePhong=ma_thue_phong).update(tongTien=tong_tien, trangThai="Đã trả",
                                                                    trangThaiThanhToan="đã thanh toán",
@@ -198,8 +199,8 @@ def add_traphong(request):
                                                                    )
         Phong.objects.filter(maPhong=ma_phong).update(tinhTrangPhong="chưa dọn")
         KhachHang.objects.filter(maKhachHang=maKhachHang).update(trangThai="hết hoạt động")
-        inhoadon_response = inhoadon(request, ma_thue_phong)
-        return inhoadon_response or redirect('list_rooms')
+        messages.warning(request, "Thanh toán thành công!")
+        return redirect('list_rooms')
     else:
         return render(request, 'error_page.html', {'error_message': 'Invalid Request'})
 
