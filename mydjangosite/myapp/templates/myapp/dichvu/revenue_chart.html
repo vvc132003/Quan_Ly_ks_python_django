@@ -18,15 +18,17 @@
         <div id="content">
             {% include 'myapp/layout/navbar.html' %}
             <br>
-            <div class="add_thuephong">
-                <div class="container">
-                    <br>
-                    <div class="row">
-                        <div class="col-8">
+            <div class="container">
+                <br>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="add_thuephong">
                             <p class="text-black">Biểu đồ thống kê doanh thu và số lượng đặt phòng trong tháng.</p>
-                            <canvas id="myChart" width="1000" height="400"></canvas>
+                            <canvas id="myChart" width="1100" height="500"></canvas>
                         </div>
-                        <div class="col-4">
+                    </div>
+                    <div class="col-6">
+                        <div class="add_thuephong">
                             <p class="text-black">Biểu đồ thống kê doanh thu theo từng dịch vụ.</p>
                             <canvas id="myPieChart" width="400" height="400"></canvas>
                         </div>
@@ -176,6 +178,7 @@
      .add_thuephong{
         background-color: #f8f8f8; /* Màu nền */
         box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2 );
+        width:100%;
     }
 </style>
 </html>

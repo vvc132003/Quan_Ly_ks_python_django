@@ -57,7 +57,9 @@ class ThuePhong(models.Model):
     khachHang = models.ForeignKey(KhachHang, on_delete=models.CASCADE, related_name='thue_phong')
     phong = models.ForeignKey(Phong, on_delete=models.CASCADE)
     ngayNhanPhong = models.DateField()
+    gioNhanPhong = models.TimeField(default='00:00')  # Provide a default value
     ngayTraPhong = models.DateField()
+    gioTraPhong = models.TimeField(default='00:00')
     tongTien = models.DecimalField(max_digits=10, decimal_places=2)
     trangThai = models.CharField(max_length=255)
     tienDatCoc = models.DecimalField(max_digits=10, decimal_places=2)
@@ -98,6 +100,7 @@ class TraPhong(models.Model):
     maTraPhong = models.AutoField(primary_key=True)
     thuePhong = models.ForeignKey(ThuePhong, on_delete=models.CASCADE, related_name='tra_phong')
     ngayTraPhong = models.DateField()
+    gioTraPhong = models.TimeField(default='00:00')
     tongTien = models.DecimalField(max_digits=10, decimal_places=2)
     nhanVien = models.ForeignKey(NhanVien, on_delete=models.SET_NULL, null=True)
 
@@ -106,3 +109,5 @@ class NhanPhong(models.Model):
     maNhanPhong = models.AutoField(primary_key=True)
     thuePhong = models.ForeignKey(ThuePhong, on_delete=models.CASCADE, related_name='nhan_phong')
     ngayNhanPhong = models.DateField()
+    gioNhanPhong = models.TimeField(default='00:00')
+
