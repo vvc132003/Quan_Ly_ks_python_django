@@ -30,7 +30,7 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Mã thuê phòng</th>
+                            <th>Nhân viên trực</th>
                             <th>Thời gian nhận phòng</th>
                             <th>Tên khách hàng</th>
                         </tr>
@@ -39,7 +39,7 @@
                         {% for nhanPhong in nhanphongs %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td>{{nhanPhong.thuePhong.maThuePhong}}</td>
+                            <td>{{nhanPhong.thuePhong.nhanVien.hoVaTenDem}}</td>
                             <td>{{nhanPhong.ngayNhanPhong}}</td>
                             <td>{{nhanPhong.thuePhong.khachHang.hoVaTenDem}}</td>
                         </tr>

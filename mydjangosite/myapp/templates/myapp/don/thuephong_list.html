@@ -31,6 +31,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Tên khách hàng</th>
+                            <th>Nhân viên trực</th>
                             <th>Thời gian nhận phòng</th>
                             <th>Thời gian dự kiến trả phòng</th>
                             <th>Trạng thái</th>
@@ -42,6 +43,7 @@
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td>{{thuephong.khachHang.hoVaTenDem}}</td>
+                            <td>{{thuephong.nhanVien.hoVaTenDem}}</td>
                             <td>{{thuephong.ngayNhanPhong}}</td>
                             <td>{{thuephong.ngayTraPhong}}</td>
                             <td>{{thuephong.trangThai}}</td>

@@ -114,7 +114,7 @@ def savethuephong(requestk):
         send_mail(subject, message, from_email, recipient_list, fail_silently=False)
         messages.success(requestk, "Thuê phòng thành công thành công!")
         return redirect('list_rooms')
-    return render(requestk, 'myapp/add_thuephong.html', {"maPhong": maPhong})
+    return render(requestk, 'myapp/add_thuephong.html', {})
 
 
 def savedatphongphong(requestk):
