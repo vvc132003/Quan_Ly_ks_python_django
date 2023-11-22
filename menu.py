@@ -122,8 +122,7 @@ def menuchuong2():
     print("|~~~~~ CHƯƠNG 2: LẬP TRÌNH VỚI THƯ VIỆN ~~~~~|")
     print("|============================================|")
     print("| 1. Thư viện NumPy                          |")
-    print("| 2. Thư viện MatplotLib                     |")
-    print("| 3. Thư viện SymPy                          |")
+    print("| 2. Thư viện SymPy                          |")
     print("| 0.  THOÁT  <--|                            |")
     print("|============================================|")
 
@@ -139,13 +138,14 @@ def menubai12():
     print("| 0.  THOÁT  <--|                                   |")
     print("|===================================================|")
 def menubai15():
-    print("------ Viết hàm giải hệ phương trình ------")
-    print("1. Viết hàm giải hệ phương trình {2x – 5y + z = −5, 4x + 2y – 2z = 2, x + y − z = 0}")
-    print("2. Viết hàm tính giới hạn của hàm f = (x3- 3x2)1/3 + (x2- 2x)1/2 khi x tiến tới 5")
-    print("3. Viết hàm tính đạo hàm của hàm f = (2x - 1)/(x + 2)")
-    print("4. Viết hàm tính nguyên hàm của hàm f = x/(x2 + 1)")
-    print("5. Viết hàm tính tích phân của hàm f = (1 - xtan(x))/(x2cos(x) + x) Với x  [0, 2pi/3]")
-    print("0. Thoát")
-    print("-------------------------------------")
-
+    print("|========================================================================================|")
+    print("|                    ~~~~~   VIẾT HÀM GIẢI HỆ PHƯƠNG TRÌNH   ~~~~~                       |")
+    print("|========================================================================================|")
+    print("| 1. Viết hàm giải hệ phương trình {2x – 5y + z = −5, 4x + 2y – 2z = 2, x + y − z = 0}   |")
+    print("| 2. Viết hàm tính giới hạn của hàm f = (x3- 3x2)1/3 + (x2- 2x)1/2 khi x tiến tới 5      |")
+    print("| 3. Viết hàm tính đạo hàm của hàm f = (2x - 1)/(x + 2)                                  |")
+    print("| 4. Viết hàm tính nguyên hàm của hàm f = x/(x2 + 1)                                     |")
+    print("| 5. Viết hàm tính tích phân của hàm f = (1 - xtan(x))/(x2cos(x) + x) Với x  [0, 2pi/3] |")
+    print("| 0.  THOÁT  <--|                                                                        |")
+    print("|========================================================================================|")
 
