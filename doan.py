@@ -15,7 +15,7 @@ def la_so_nguyen_to(num):
     return True
 
 
-def tong_so_nguyen_to_duoi_n(n):
+def tongsonguyento(n):
     tong_nguyen_to = 0
     for i in range(2, n):
         if la_so_nguyen_to(i):
@@ -23,7 +23,7 @@ def tong_so_nguyen_to_duoi_n(n):
     return tong_nguyen_to
 
 
-def tong_cac_uoc_so(n):
+def tongcacuocso(n):
     tong_uoc = 0
     for i in range(1, n + 1):
         if n % i == 0:
@@ -31,14 +31,14 @@ def tong_cac_uoc_so(n):
     return tong_uoc
 
 
-def tong_so_chan_for_loop(n):
+def tongsochanfor(n):
     tong_chan = 0
     for i in range(2, n + 1, 2):
         tong_chan += i
     return tong_chan
 
 
-def tong_so_chan_while_loop(n):
+def tốngchanwwhile(n):
     tong_chan = 0
     i = 2
     while i <= n:
@@ -49,7 +49,7 @@ def tong_so_chan_while_loop(n):
 
 # bài 3
 
-def dem_uoc_so_thuc_su(n):
+def demuocsothucsu(n):
     dem = 0
     for i in range(1, n):
         if n % i == 0:
@@ -57,7 +57,7 @@ def dem_uoc_so_thuc_su(n):
     return dem
 
 
-def la_so_nguyen_to(n):
+def lasonguyento(n):
     if n < 2:
         return 0
     for i in range(2, int(n ** 0.5) + 1):
@@ -66,7 +66,7 @@ def la_so_nguyen_to(n):
     return 1
 
 
-def dem_uoc_so_le(n):
+def demuocsole(n):
     dem = 0
     for i in range(1, n + 1, 2):
         if n % i == 0:
@@ -74,7 +74,7 @@ def dem_uoc_so_le(n):
     return dem
 
 
-def dem_so_nguyen_to_nho_hon_n(n):
+def demsonguyentonhohonn(n):
     dem = 0
     for i in range(2, n):
         if la_so_nguyen_to(i):
@@ -82,7 +82,7 @@ def dem_so_nguyen_to_nho_hon_n(n):
     return dem
 
 
-def tong_uoc_so_thuc_su(n):
+def tonguocsothucsu(n):
     tong = 0
     for i in range(1, n):
         if n % i == 0:
@@ -90,26 +90,6 @@ def tong_uoc_so_thuc_su(n):
     return tong
 
 
-if __name__ == "__main__":
-    n = int(input("Nhập số tự nhiên n (50 <= n <= 150): "))
-
-    if 50 <= n <= 150:
-        so_uoc_so = dem_uoc_so_thuc_su(n)
-        print(f"Số ước số thực sự của {n} là: {so_uoc_so}")
-
-        la_so_nguyen_to_kq = "là" if la_so_nguyen_to(n) else "không phải là"
-        print(f"{n} {la_so_nguyen_to_kq} số nguyên tố")
-
-        so_uoc_so_le = dem_uoc_so_le(n)
-        print(f"Số ước số lẻ của {n} là: {so_uoc_so_le}")
-
-        so_nguyen_to_nho_hon_n = dem_so_nguyen_to_nho_hon_n(n)
-        print(f"Số số nguyên tố nhỏ hơn {n} là: {so_nguyen_to_nho_hon_n}")
-
-        tong_uoc_so_thuc_su = tong_uoc_so_thuc_su(n)
-        print(f"Tổng tất cả các ước số thực sự của {n} là: {tong_uoc_so_thuc_su}")
-    else:
-        print("Số không nằm trong khoảng từ 50 đến 150.")
 
 # bài 4
 import math
@@ -131,10 +111,10 @@ def create_array_C(A, B):
 
 # bài 5
 
-def kiem_tra_chuoi_con(Str1, Str2):
+def kiemtrachuoicon(Str1, Str2):
     return Str2 in Str1
 
-def dem_so_lan_xuat_hien(Str1, Str2):
+def demsolanxuathien(Str1, Str2):
     dem = 0
     vi_tri = 0
     while True:
@@ -145,18 +125,18 @@ def dem_so_lan_xuat_hien(Str1, Str2):
         else:
             break
     return dem
-def chen_chuoi(Str1, Str2, k):
+def chenchuoi(Str1, Str2, k):
     return Str1[:k] + Str2 + Str1[k:]
 
 
 # bài 6
 import random
 
-def tao_tap_hop_A():
+def taotaphopA():
     tap_hop_A = set(random.sample(range(1, 1001), 100))
     return tap_hop_A
 
-def tao_tap_hop_B(tap_hop_A):
+def taotaphopB(tap_hop_A):
     if tap_hop_A is None:
         print("Tạo tập hợp A trước.")
         return None
@@ -165,7 +145,7 @@ def tao_tap_hop_B(tap_hop_A):
         tap_hop_B = set(random.sample(list_tap_hop_A, 20))
         return tap_hop_B
 
-def tao_tap_hop_C(tap_hop_B):
+def taotaphopC(tap_hop_B):
     if tap_hop_B is None:
         print("Tạo tập hợp B trước.")
         return None
@@ -181,28 +161,28 @@ def hien_thi_tap_hop(tap_hop, ten_tap_hop):
 #bài 7
 
 
-def in_diem_lon_nhat(dictionary):
+def indiemlonnhat(dictionary):
     max_score = max(dictionary.values())
     print(f"Điểm lớn nhất là: {max_score}")
 
-def in_mon_diem_lon_nhat(dictionary):
+def inmondiemlonnhat(dictionary):
     max_score = max(dictionary.values())
     mon_hoc_max = [mon for mon, diem in dictionary.items() if diem == max_score]
     print(f"Môn và điểm có điểm lớn nhất: {', '.join(mon_hoc_max)}: {max_score}")
 
-def in_diem_so_chan(dictionary):
+def indiemsochan(dictionary):
     diem_chan = [diem for diem in dictionary.values() if diem % 2 == 0]
     print(f"Các điểm số chẵn: {diem_chan}")
 
-def tinh_trung_binh_diem(dictionary):
+def tinhtrungbinhdiem(dictionary):
     avg_score = sum(dictionary.values()) / len(dictionary)
     print(f"Trung bình các điểm: {avg_score}")
 
-def tao_tu_dien_moi(dictionary):
+def taotudienmoi(dictionary):
     tu_dien_moi = {mon: diem for mon, diem in dictionary.items() if diem > 7}
     print(f"Từ điển mới với các môn lớn hơn 7 điểm: {tu_dien_moi}")
 
-def dao_nguoc_tu_dien(dictionary):
+def daonguoctudien(dictionary):
     tu_dien_dao = {v: k for k, v in dictionary.items()}
     print(f"Từ điển sau khi đảo ngược: {tu_dien_dao}")
 
@@ -341,4 +321,49 @@ def tinh_tich_vector_va_ma_tran(vector, matrix):
 
 def tinh_tich_hai_ma_tran(matrix1, matrix2):
     return np.dot(matrix1, matrix2)
+
+#bài 15
+import numpy as np
+from sympy import symbols, limit, sqrt, diff, integrate, tan, cos, pi
+
+def solve_equation():
+    coeff_matrix = np.array([[2, -5, 1], [4, 2, -2], [1, 1, -1]])
+    constants = np.array([-5, 2, 0])
+
+    solution = np.linalg.solve(coeff_matrix, constants)
+    return solution
+
+
+def calculate_limit():
+    x = symbols('x')
+    f = ((x**3 - 3*x**2)**(1/3)) + ((x**2 - 2*x)**(1/2))
+    limit_value = limit(f, x, 5)
+    return limit_value
+
+
+
+#Viết hàm tính nguyên hàm của hàm f = x/(x2 + 1
+def nguyeham():
+    # Khai báo biến
+    x = symbols('x')
+    # Định nghĩa hàm số f(x)
+    f_x = x / (x ** 2 + 1)
+    # Tính nguyên hàm của f(x)
+    integral = integrate(f_x, x)
+    # Trả về kết quả
+    return integral
+
+def calculate_derivative():
+    x = symbols('x')
+    f = (2*x - 1) / (x + 2)
+
+    derivative = diff(f, x)
+    return derivative
+
+
+def calculate_integral_with_limits():
+    x = symbols('x')
+    f = (1 - x*tan(x)) / (x**2 * cos(x) + x)
+    integral = integrate(f, (x, 0, 2*pi/3))
+    return integral
 

@@ -1,23 +1,22 @@
-import doan
-import menu,ham
+import ham
 
 
 if __name__ == '__main__':
     while True:
-        print("====== MENU ======")
-        print("1. CHƢƠNG 1: PYTHON CƠ BẢN")
-        print("2. CHƢƠNG 2: LẬP TRÌNH VỚI THƢ VIỆN")
-        print("3. CHƢƠNG 3: LẬP TRÌNH NÂNG CAO")
-        print("4. Thoát")
-        print("==================")
+        print()
+        print("|============================================|")
+        print("|            ~~~~~  MENU  ~~~~~              |")
+        print("|============================================|")
+        print("| 1. CHƯƠNG 1: PYTHON CƠ BẢN                 |")
+        print("| 2. CHƯƠNG 2: LẬP TRÌNH VỚI THƯ VIỆN        |")
+        print("| 0.  THOÁT  <--|                            |")
+        print("|============================================|")
         chuong = input("Nhập chương bạn muốn xem: ")
         if chuong == '1':
-            ham.chuong_1_menu()
+            ham.chuong1()
         elif chuong == '2':
-            ham.chuong_2_menu()
-        elif chuong == '3':
-            menu.menu_chuong_3()
-        elif chuong == '4':
+            ham.chuong2()
+        elif chuong == '0':
             print("Bạn đã chọn thoát. Kết thúc chương trình.")
             break
         else:
