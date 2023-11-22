@@ -57,6 +57,6 @@ urlpatterns = [
     path('don_phong/<int:maPhong>/', views.don_phong, name='don_phong'),
     path('nhan_phong/<int:maPhong>/', views.nhan_phong, name='nhan_phong'),
     path('addnhanphong', views.addnhanphong, name='addnhanphong'),
-    path('revenue_chart', views.revenue_chart, name='revenue_chart'),
+    path('thongke', views.thongke, name='thongke'),
 
 ]

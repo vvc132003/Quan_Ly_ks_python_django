@@ -21,16 +21,36 @@
             <div class="container">
                 <br>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col">
                         <div class="add_thuephong">
                             <p class="text-black">Biểu đồ thống kê doanh thu và số lượng đặt phòng trong tháng.</p>
-                            <canvas id="myChart" width="1100" height="500"></canvas>
+                            <canvas id="myChart" width="2000" height="500"></canvas>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col">
+                        <br>
                         <div class="add_thuephong">
-                            <p class="text-black">Biểu đồ thống kê doanh thu theo từng dịch vụ.</p>
-                            <canvas id="myPieChart" width="400" height="400"></canvas>
+                            <p style="color:black">Thống kê doanh thu theo dịch vụ</p>
+                            <div class="table-container">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Tên Dịch Vụ</th>
+                                        <th>Tổng Thành tiền</th>
+                                        <th>Tổng số lượng bán</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in thong_ke_dich_vu %}
+                                    <tr>
+                                        <td>{{ item.dichVu__tenDichVu }}</td>
+                                        <td>{{ item.tongThanhTien }}</td>
+                                        <td>{{ item.tongSoLuong}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -102,61 +122,35 @@
         });
     });
 </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var ctx = document.getElementById('myPieChart').getContext('2d');
-        var data = {{ data|safe }};
 
-        // Lấy dữ liệu từ Django và tạo mảng dữ liệu cho biểu đồ
-
-        var dichVu = data.dichVu;
-
-        var so_luong_dich_vu = data.so_luong_dich_vu;
-
-        var doanh_thu_dich_vu = data.doanh_thu_dich_vu;
-
-        // Tạo biểu đồ tròn cho số lượng dịch vụ
-        var pieChartSoLuong = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: so_luong_dich_vu,
-                datasets: [{
-                    label: 'Số lượng thuê dịch vụ',
-                    data: so_luong_dich_vu,
-                    backgroundColor: [
-                        'red',
-                        'blue',
-                        'green',
-                    ]
-                }]
-            },
-            options: {
-                // Cấu hình tùy chọn khác cho biểu đồ số lượng dịch vụ
-            }
-        });
-
-        // Tạo biểu đồ tròn cho doanh thu dịch vụ
-        var pieChartDoanhThu = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: doanh_thu_dich_vu,
-                datasets: [{
-                    label: 'Tổng tiền của từng dịch vụ',
-                    data: doanh_thu_dich_vu,
-                    backgroundColor: [
-                        'red',
-                        'blue',
-                        'green',
-                    ]
-                }]
-            },
-            options: {
-                // Cấu hình tùy chọn khác cho biểu đồ doanh thu dịch vụ
-            }
-        });
-    });
-</script>
 </body>
+<style>
+    .small-image {
+        width: 50px;
+        height: 50px;
+    }
+
+    .table-container {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .table thead th {
+        text-align: center;
+        background-color: #999999;
+        color: white;
+    }
+
+    .table {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+    }
+
+    .table th, .table td {
+        border: 1px solid #ccc; /
+        padding: 8px;
+    }
+</style>
 <style>
     .container .form-controll{
          display: block;

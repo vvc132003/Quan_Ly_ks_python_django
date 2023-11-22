@@ -12,6 +12,23 @@
         <div id="content">
             {% include 'myapp/layout/navbar.html' %}
             <br>
+            <div class="text-center" style="padding: 0px 23px;">
+                <div class="square" style="background-color: #2387e0">
+                    <a>Phòng trống</a>
+                </div>
+                <div class="square" style="background-color: #489d41">
+                    <a>Phòng đã có người ở</a>
+                </div>
+                <div class="square" style="background-color: #cfb890">
+                    <a>Phòng có người đặt</a>
+                </div>
+                <div class="square" style="background-color: #e7574d">
+                    <a>Phòng đang sửa chữa</a>
+                </div>
+                <div class="square" style="background-color: #C0C0C0">
+                    <a>Phòng đang dọn dẹp</a>
+                </div>
+            </div>
             {% include 'myapp/rooms/room.html' %}
         </div>
     </div>

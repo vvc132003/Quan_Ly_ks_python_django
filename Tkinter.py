@@ -11,7 +11,8 @@ cursor.execute('''
         gia INTEGER NOT NULL,
         mo_ta TEXT,
         ngay_them DATE NOT NULL,
-        so_luong_con INTEGER NOT NULL
+        so_luong_con INTEGER NOT NULL,
+        trang_thai BOOLEAN NOT NULL
     )
 ''')
 def hien_thi_danh_sach_san_pham():
@@ -32,9 +33,10 @@ def them_san_pham():
     mo_ta = entrymota.get()
     ngay_them = entryngaythem.get()
     so_luong_con = entrysoluongcon.get()
+    selected_option = radio_var.get()
     with ketnoicsdl.connection.cursor() as cursor:
-        cursor.execute("INSERT INTO san_pham (ten, gia, mo_ta, ngay_them, so_luong_con) VALUES (%s, %s, %s, %s, %s)",
-                       (ten_san_pham, gia_san_pham, mo_ta, ngay_them, so_luong_con))
+        cursor.execute("INSERT INTO san_pham (ten, gia, mo_ta, ngay_them, so_luong_con,trang_thai) VALUES (%s, %s, %s, %s, %s, %s)",
+                       (ten_san_pham, gia_san_pham, mo_ta, ngay_them, so_luong_con,selected_option))
         ketnoicsdl.connection.commit()
         hien_thi_danh_sach_san_pham()
 
@@ -44,7 +46,6 @@ def get_selected_product(event):
     # Lấy dòng sản phẩm được chọn từ Treeview
     selected_item = tree.focus()
     product = tree.item(selected_item, 'values')
-
     # Hiển thị thông tin sản phẩm lên các Entry/Label
     entrytensanpham.delete(0, END)
     entrytensanpham.insert(0, product[1])  # Tên sản phẩm
@@ -83,6 +84,9 @@ def xoa_san_pham():
         ketnoicsdl.connection.commit()
         hien_thi_danh_sach_san_pham()
 
+def on_radio_select():
+    selected_option = radio_var.get()
+    print("Selected option:", selected_option)
 
 window = Tk()
 window.title("Quản lý ản phẩm")
@@ -118,17 +122,34 @@ soluongcon.place(x=380, y=50)
 entrysoluongcon = Entry(window, font="arial 10 bold", bg="white", fg="black", bd=4, width=25)
 entrysoluongcon.place(x=480, y=50)
 
+
+
+# Tạo biến để lưu trạng thái của radio button
+radio_var = tk.StringVar()
+# Tạo các radio button và liên kết với biến trạng thái
+radiobutton = Label(window, text="Trạng thái:", font="arial 10 bold", fg="green")
+radiobutton.place(x=380, y=80)
+
+radio_button1 = tk.Radiobutton(window, text="True", variable=radio_var, value="1", command=on_radio_select)
+radio_button1.place(x=480, y=80)
+
+radio_button2 = tk.Radiobutton(window, text="False", variable=radio_var, value="0", command=on_radio_select)
+radio_button2.place(x=580, y=80)
+
+
 # button thêm sản phẩm
 btnthemsanpham = tk.Button(window, text="Thêm sản phẩm", width=20, bg="green", fg="white", font="arial 10 bold", command=them_san_pham)
 btnthemsanpham.place(x=780, y=20)
 
 # button cập nhật sản phẩm
+
 btncapnhatsanpham = tk.Button(window, text="Cập nhật sản phẩm", width=20, bg="orange", fg="white", font="arial 10 bold",command=cap_nhat_san_pham)
 btncapnhatsanpham.place(x=780, y=50)
 
 # button xoá sản phẩm
 btnxoasanpham = Button(window, text="Xoá sản phẩm", width=20, bg="red", fg="white", font="arial 10 bold",command=xoa_san_pham)
 btnxoasanpham.place(x=780, y=85)
+
 
 # Khung chứa Treeview
 tablesanpham = tk.Frame(window)
@@ -145,8 +166,6 @@ tree.heading("Số lượng còn", text="Số lượng còn", anchor=tk.CENTER)
 for col in tree["columns"]:
     tree.column(col, anchor=tk.CENTER)
 tree.bind('<ButtonRelease-1>', get_selected_product)
-
 tree.pack()
 hien_thi_danh_sach_san_pham()
-
 window.mainloop()

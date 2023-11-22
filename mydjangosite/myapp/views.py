@@ -23,32 +23,26 @@ from django.http import JsonResponse
 # Create your views here.
 
 
-def revenue_chart(request):
+def thongke(request):
     thong_ke = ThuePhong.objects.annotate(month=ExtractMonth('ngayNhanPhong')) \
         .values('month') \
         .annotate(so_lan_thue=Count('maThuePhong'), doanh_thu=Sum('tongTien')) \
         .order_by('month')
-
-    thong_ke_dich_vu = ThueDichVu.objects.values('dichVu') \
-        .annotate(so_luong_dich_vu=Count('dichVu'), doanh_thu_dich_vu=Sum('thanhTien')) \
-        .order_by('dichVu')
-
     thang = [entry['month'] for entry in thong_ke]
     so_lan_thue = [entry['so_lan_thue'] for entry in thong_ke]
     doanh_thu = [entry['doanh_thu'] for entry in thong_ke]
-    dichVu = [entry['dichVu'] for entry in thong_ke_dich_vu]
-    so_luong_dich_vu = [entry['so_luong_dich_vu'] for entry in thong_ke_dich_vu]
-    doanh_thu_dich_vu = [entry['doanh_thu_dich_vu'] for entry in thong_ke_dich_vu]
-
+    thong_ke_dich_vu = ThueDichVu.objects.values('dichVu__tenDichVu').annotate(
+        tongThanhTien=Sum('thanhTien'),
+        tongSoLuong=Sum('soLuong')
+    ).order_by('-tongThanhTien')
     data = {
         'thang': thang,
         'so_lan_thue': so_lan_thue,
-        'doanh_thu': [str(entry) for entry in doanh_thu],  # Chuyển Decimals thành chuỗi
-        'dichVu': dichVu,
-        'so_luong_dich_vu': so_luong_dich_vu,
-        'doanh_thu_dich_vu': [str(entry) for entry in doanh_thu_dich_vu],
+        'doanh_thu': [str(entry) for entry in doanh_thu],
+
+
     }
-    return render(request, 'myapp/dichvu/revenue_chart.html', {'data': data})
+    return render(request, 'myapp/dichvu/revenue_chart.html', {'data': data, 'thong_ke_dich_vu': thong_ke_dich_vu})
 
 
 def add_thuephong(request, maPhong):
@@ -129,6 +123,8 @@ def savedatphongphong(requestk):
         tienDatCoc = requestk.POST.get("tienDatCoc")
         ngayNhanPhong = requestk.POST.get("ngayNhanPhong")
         ngayTraPhong = requestk.POST.get("ngayTraPhong")
+        gioNhanPhong = requestk.POST.get("gioNhanPhong")
+        gioTraPhong = requestk.POST.get("gioTraPhong")
         khach_hang = KhachHang.objects.create(
             hoVaTenDem=hoVaTenDem,
             soDienThoai=soDienThoai,
@@ -143,6 +139,8 @@ def savedatphongphong(requestk):
             phong=phong,
             ngayNhanPhong=ngayNhanPhong,
             ngayTraPhong=ngayTraPhong,
+            gioNhanPhong=gioNhanPhong,
+            gioTraPhong=gioTraPhong,
             trangThai="Đã đặt",
             tongTien=0,
             tienDatCoc=tienDatCoc,
