@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
-def plot_horse_saddle():
+def yenngua():
     x = np.linspace(-5, 5, 100)
     y = np.linspace(-5, 5, 100)
     x, y = np.meshgrid(x, y)
@@ -19,7 +19,7 @@ def plot_horse_saddle():
 
     plt.show()
 
-def plot_hyperboloid():
+def hyperbolic():
     x = np.linspace(-5, 5, 100)
     y = np.linspace(-5, 5, 100)
     x, y = np.meshgrid(x, y)
@@ -36,7 +36,7 @@ def plot_hyperboloid():
 
     plt.show()
 
-def plot_sphere():
+def matcau():
     u = np.linspace(0, 2 * np.pi, 100)
     v = np.linspace(0, np.pi, 100)
     x = 2 * np.outer(np.cos(u), np.sin(v)) - 2
@@ -54,7 +54,4 @@ def plot_sphere():
 
     plt.show()
 
-# Vẽ đồ thị cho mỗi loại mặt phẳng
-plot_horse_saddle()
-plot_hyperboloid()
-plot_sphere()
+
