@@ -310,17 +310,21 @@ def doc_va_in_danh_sach_tu_file():
 
 import numpy as np
 
-def tao_vector_x(n):
-    return np.arange(-3, 6)[:n]
+def vectorx(m):
+    return np.arange(-3, 6)[:m]
 
-def tao_ma_tran_random(m, n):
-    return np.random.randint(-10, 10, size=(m, n))
+def matran(m, n):
+    return np.random.randint(0, 10, size=(m, n))
 
-def tinh_tich_vector_va_ma_tran(vector, matrix):
-    return np.dot(vector, matrix)
+def tichvector(x, A):
+    return x.dot(A)
 
-def tinh_tich_hai_ma_tran(matrix1, matrix2):
-    return np.dot(matrix1, matrix2)
+def tichh2mt(A, B):
+    return np.dot(A, B)
+
+def tichcv(C, B):
+    return np.dot(C.T, B)
+
 
 #bài 15
 import numpy as np

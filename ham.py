@@ -321,28 +321,36 @@ def bai12():
         choice = input("Nhập lựa chọn của bạn: ")
         if choice == '1':
             #Tạo vectơ x và ma trận A, B, C
-            n_phan_tu = 5
-            m, n_hang = 5, 3
-            vector_x = doan.tao_vector_x(n_phan_tu)
-            matrix_A = doan.tao_ma_tran_random(m, n_hang)
-            matrix_B = doan.tao_ma_tran_random(m, n_hang)
-            matrix_C = doan.tao_ma_tran_random(n_hang, m)
+            m = 4
+            n = 3
+            x = doan.vectorx(m)
+            print("Vector x:")
+            print(x)
+            A = doan.matran(m, n)
+            B = doan.matran(n, n)
+            print("\nMa trận A:")
+            print(A)
+            print("\nMa trận B:")
+            print(B)
+            C = doan.matran(n, m)
+            print("\nMa trận C:")
+            print(C)
             print("Vectơ và các ma trận đã được tạo.")
         elif choice == '2':
             #Tính tích của vectơ x và ma trận A
-            result_xA = doan.tinh_tich_vector_va_ma_tran(vector_x, matrix_A)
-            print("Tích của vector x và ma trận A:")
-            print(result_xA)
+            kq1 = doan.tichvector(x, A)
+            print("\nTích của vectơ x và ma trận A:")
+            print(kq1)
         elif choice == '3':
             #Tính tích của hai ma trận A và B
-            result_AB = doan.tinh_tich_hai_ma_tran(matrix_A, matrix_B)
-            print("\nTích của hai ma trận A và B:")
-            print(result_AB)
+            kq2 = doan.tichh2mt(A, B)
+            print("\nTích hai ma trận A và B:")
+            print(kq2)
         elif choice == '4':
             #Tính tích của ma trận chuyển vị C và ma trận B
-            result_CtB = doan.tinh_tich_hai_ma_tran(matrix_C.T, matrix_B)
-            print("\nTích của ma trận chuyển vị C và ma trận B:")
-            print(result_CtB)
+            kq3 = doan.tichcv(C, B)
+            print("\nTích hai ma trận chuyển vị C và B:")
+            print(kq3)
         elif choice == '0':
             print("Kết thúc chương trình.")
             break

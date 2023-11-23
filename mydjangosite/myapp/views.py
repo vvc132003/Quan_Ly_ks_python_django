@@ -102,7 +102,7 @@ def savethuephong(requestk):
         nhan_phong.save()
         Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="có khách")
         subject = 'Thuê phòng'
-        message = f'Bạn đã thuê phòng {maPhong}.'
+        message = f'Bạn đã thuê phòng {maPhong}, Ngày thuê: {ngayNhanPhong}.'
         from_email = 'vvc132003@gmail.com'
         recipient_list = [email]
         send_mail(subject, message, from_email, recipient_list, fail_silently=False)
@@ -149,6 +149,11 @@ def savedatphongphong(requestk):
         )
         thue_phong.save()
         Phong.objects.filter(maPhong=maPhong).update(tinhTrangPhong="đã đặt")
+        subject = 'Thuê phòng'
+        message = f'Bạn đã thuê phòng {maPhong}, Ngày đặt: {ngayNhanPhong}.'
+        from_email = 'vvc132003@gmail.com'
+        recipient_list = [email]
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
         messages.success(requestk, "Đặt phòng thành công thành công!")
         return redirect('homee')
     return render(requestk, 'myapp/add_thuephong.html', {})
